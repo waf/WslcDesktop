@@ -1,0 +1,6 @@
+# argv: wslc volume inspect wslcgui-s1-novol
+# exit: 1
+# --- stdout (4 bytes)
+[]
+# --- stderr (38 bytes)
+Volume not found: 'wslcgui-s1-novol'

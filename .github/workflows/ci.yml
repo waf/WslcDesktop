@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Test
+        run: dotnet test --solution WslcGui.slnx -c Release
+
+      - name: Publish (NativeAOT, win-x64)
+        shell: pwsh
+        run: ./build/publish.ps1 -Runtime win-x64
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: WslcGui-win-x64
+          path: artifacts/publish/win-x64/WslcGui.exe

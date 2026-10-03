@@ -1,0 +1,2 @@
+{"Availability":"N/A","Driver":"guest","Group":"N/A","Labels":"","Links":"N/A","Mountpoint":"/var/lib/docker/volumes/wslcgui-s1-vol/_data","Name":"wslcgui-s1-vol","Scope":"local","Size":"N/A","Status":"N/A"}
+{"Availability":"N/A","Driver":"guest","Group":"N/A","Labels":"com.docker.volume.anonymous=","Links":"N/A","Mountpoint":"/var/lib/docker/volumes/0db5a1c8646f04c1d0ac5e63987bd1a95a9a9edb5705d3c0d6f75fa986d4c49c/_data","Name":"0db5a1c8646f04c1d0ac5e63987bd1a95a9a9edb5705d3c0d6f75fa986d4c49c","Scope":"local","Size":"N/A","Status":"N/A"}

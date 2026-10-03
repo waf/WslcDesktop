@@ -1,0 +1,5 @@
+REPOSITORY   TAG             IMAGE ID       CREATED       SIZE
+debian       bookworm-slim   db9f02c6bde9   2 weeks ago   74.8MB
+redis        7-alpine        f84b0c467801   2 weeks ago   39.1MB
+postgres     16-alpine       81bd698b4594   2 weeks ago   294MB
+alpine       latest          320994c3b997   2 weeks ago   8.42MB

@@ -1,0 +1,5 @@
+# argv: wslc start wslcgui-s1-deb
+# exit: 0
+# --- stdout (16 bytes)
+wslcgui-s1-deb
+# --- stderr (0 bytes)

@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Libraries must stay trimming/AOT-clean so the app can publish with NativeAOT. -->
+  <PropertyGroup Condition="'$(OutputType)' != 'Exe' And '$(OutputType)' != 'WinExe' And '$(IsTestProject)' != 'true'">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <!--
+    Process isolation: only WslcGui.Engine.Cli may start processes or pseudo-consoles.
+    Everything else gets the banned-API analyzer with BannedSymbols.txt.
+  -->
+  <PropertyGroup>
+    <AllowProcessApis Condition="'$(MSBuildProjectName)' == 'WslcGui.Engine.Cli'">true</AllowProcessApis>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(AllowProcessApis)' != 'true'">
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" PrivateAssets="all" />
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)BannedSymbols.txt" />
+  </ItemGroup>
+</Project>

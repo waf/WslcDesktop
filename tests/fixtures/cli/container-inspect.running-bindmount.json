@@ -1,0 +1,79 @@
+[
+  {
+    "Config": {
+      "Cmd": [
+        "redis-server"
+      ],
+      "Entrypoint": [
+        "docker-entrypoint.sh"
+      ],
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "REDIS_VERSION=7.4.11"
+      ],
+      "Healthcheck": null,
+      "Image": "redis:7-alpine",
+      "Labels": {},
+      "StopTimeout": null,
+      "User": "",
+      "WorkingDir": "/data"
+    },
+    "Created": "2026-10-03T03:37:34.038200632Z",
+    "HostConfig": {
+      "Memory": 0,
+      "NanoCpus": 0,
+      "NetworkMode": "bridge",
+      "Ulimits": []
+    },
+    "Id": "c3961e97de0ecb13441a0c66df4cdf16a9ab9114fd9a850598b2d2b2d64c5851",
+    "Image": "sha256:f84b0c4678011602b9b98c227a4dcd5468bf8b088b02fdd4165cb7758bad8058",
+    "Labels": {},
+    "Mounts": [
+      {
+        "Destination": "/hostdocs",
+        "Name": "",
+        "ReadWrite": false,
+        "Source": "D:\\Personal\\WslcGui\\docs",
+        "Type": "bind"
+      },
+      {
+        "Destination": "/data",
+        "Name": "0db5a1c8646f04c1d0ac5e63987bd1a95a9a9edb5705d3c0d6f75fa986d4c49c",
+        "ReadWrite": true,
+        "Source": "",
+        "Type": "volume"
+      }
+    ],
+    "Name": "/wslcgui-s1-redis",
+    "NetworkSettings": {
+      "Networks": {
+        "bridge": {
+          "Aliases": [],
+          "DriverOpts": {},
+          "Gateway": "172.17.0.1",
+          "IPAMConfig": null,
+          "IPAddress": "172.17.0.2",
+          "IPPrefixLen": 16,
+          "Links": [],
+          "MacAddress": "02:42:ac:11:00:02"
+        }
+      }
+    },
+    "Ports": {
+      "6379/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "16379"
+        }
+      ]
+    },
+    "State": {
+      "ExitCode": 0,
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "Health": null,
+      "Running": true,
+      "StartedAt": "2026-10-03T03:37:34.613841649Z",
+      "Status": "running"
+    }
+  }
+]

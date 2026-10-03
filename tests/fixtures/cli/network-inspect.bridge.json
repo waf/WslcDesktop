@@ -1,0 +1,61 @@
+[
+  {
+    "Attachable": false,
+    "ConfigFrom": {
+      "Network": ""
+    },
+    "ConfigOnly": false,
+    "Containers": {
+      "5fa2944e80e52226a046abe345a5c8c9fae1f416f30fedc2423034d35f12bd39": {
+        "EndpointID": "5d4869e17dbb4143f87e354bf39c7856f3cb12c757c329cd041fa4b6e0c6fdab",
+        "IPv4Address": "172.17.0.4/16",
+        "IPv6Address": "",
+        "MacAddress": "02:42:ac:11:00:04",
+        "Name": "wslcgui-s1-deb"
+      },
+      "a95d3792f98c135a179b2e7766166184020b15924acd3539f22324c3c6a3e0ea": {
+        "EndpointID": "3be6699a90240c9080742f41145718271606d6a054a7f72d34e4f7cca120d097",
+        "IPv4Address": "172.17.0.3/16",
+        "IPv6Address": "",
+        "MacAddress": "02:42:ac:11:00:03",
+        "Name": "wslcgui-s1-logger"
+      },
+      "c3961e97de0ecb13441a0c66df4cdf16a9ab9114fd9a850598b2d2b2d64c5851": {
+        "EndpointID": "bb9aee3953d0abe053480a066290435768b4e589e55a1d4c79c58b664d1ef4d9",
+        "IPv4Address": "172.17.0.2/16",
+        "IPv6Address": "",
+        "MacAddress": "02:42:ac:11:00:02",
+        "Name": "wslcgui-s1-redis"
+      }
+    },
+    "Created": "2026-10-03T03:37:32.993374191Z",
+    "Driver": "bridge",
+    "EnableIPv4": true,
+    "EnableIPv6": false,
+    "IPAM": {
+      "Config": [
+        {
+          "Gateway": "172.17.0.1",
+          "Subnet": "172.17.0.0/16"
+        }
+      ],
+      "Driver": "default",
+      "Options": {}
+    },
+    "Id": "776f04df0ed2cf55c84c65505ea0ac7607dbbd93c0f1fa83341140b290bc9879",
+    "Ingress": false,
+    "Internal": false,
+    "Labels": {},
+    "Name": "bridge",
+    "Options": {
+      "com.docker.network.bridge.default_bridge": "true",
+      "com.docker.network.bridge.enable_icc": "true",
+      "com.docker.network.bridge.enable_ip_masquerade": "true",
+      "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+      "com.docker.network.bridge.name": "docker0",
+      "com.docker.network.driver.mtu": "1500"
+    },
+    "Scope": "local",
+    "Status": {}
+  }
+]

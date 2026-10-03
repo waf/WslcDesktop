@@ -1,0 +1,13 @@
+Client:
+WSL version: 3.0.1.0
+Kernel version: 6.18.40.1-1
+Direct3D version: 1.611.1-81528511
+DXCore version: 10.0.26100.1-240331-1435.ge-release
+Windows version: 10.0.26300.9457
+Settings file: C:\Users\will\AppData\Local\wslc\settings.yaml
+
+Server:
+Session manager version: 3.0.1
+Sessions: 1
+ID   Creator PID   Display Name
+1    22452         wslc-cli-will

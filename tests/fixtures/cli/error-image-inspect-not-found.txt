@@ -1,0 +1,6 @@
+# argv: wslc image inspect wslcgui-s1-noimage:latest
+# exit: 1
+# --- stdout (4 bytes)
+[]
+# --- stderr (46 bytes)
+Image 'wslcgui-s1-noimage:latest' not found.

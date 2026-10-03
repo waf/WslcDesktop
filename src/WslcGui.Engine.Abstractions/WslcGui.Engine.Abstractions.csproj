@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Engine contracts and plain models only: no implementation, no package dependencies. -->
+</Project>

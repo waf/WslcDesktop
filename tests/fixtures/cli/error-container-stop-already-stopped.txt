@@ -1,0 +1,5 @@
+# argv: wslc stop wslcgui-s1-exited
+# exit: 0
+# --- stdout (19 bytes)
+wslcgui-s1-exited
+# --- stderr (0 bytes)

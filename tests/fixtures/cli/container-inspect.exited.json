@@ -1,0 +1,56 @@
+[
+  {
+    "Config": {
+      "Cmd": [
+        "sh",
+        "-c",
+        "echo hello-from-exited; echo bye >&2; exit 3"
+      ],
+      "Entrypoint": null,
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      ],
+      "Healthcheck": null,
+      "Image": "alpine:latest",
+      "Labels": {},
+      "StopTimeout": null,
+      "User": "",
+      "WorkingDir": "/"
+    },
+    "Created": "2026-10-03T03:37:36.044185867Z",
+    "HostConfig": {
+      "Memory": 0,
+      "NanoCpus": 0,
+      "NetworkMode": "bridge",
+      "Ulimits": []
+    },
+    "Id": "754ceed05ea0b4a909642df080f86be179f059a74161afa443589feb7eaa1e31",
+    "Image": "sha256:320994c3b997e2ec6433f717f153e108023c5bec8fefa8d76b83451d16d05ea8",
+    "Labels": {},
+    "Mounts": [],
+    "Name": "/wslcgui-s1-exited",
+    "NetworkSettings": {
+      "Networks": {
+        "bridge": {
+          "Aliases": [],
+          "DriverOpts": {},
+          "Gateway": "",
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "Links": [],
+          "MacAddress": ""
+        }
+      }
+    },
+    "Ports": {},
+    "State": {
+      "ExitCode": 3,
+      "FinishedAt": "2026-10-03T03:37:36.746601353Z",
+      "Health": null,
+      "Running": false,
+      "StartedAt": "2026-10-03T03:37:36.745142089Z",
+      "Status": "exited"
+    }
+  }
+]

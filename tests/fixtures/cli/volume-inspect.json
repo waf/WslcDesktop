@@ -1,0 +1,11 @@
+[
+  {
+    "CreatedAt": "2026-10-03T03:37:33Z",
+    "Driver": "guest",
+    "Labels": null,
+    "Mountpoint": "/var/lib/docker/volumes/wslcgui-s1-vol/_data",
+    "Name": "wslcgui-s1-vol",
+    "Options": null,
+    "Scope": "local"
+  }
+]

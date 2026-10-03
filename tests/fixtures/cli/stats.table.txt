@@ -1,0 +1,5 @@
+CONTAINER ID   NAME                CPU %   MEM USAGE / LIMIT     MEM %   NET I/O       BLOCK I/O         PIDS
+5fa2944e80e5   wslcgui-s1-deb      0.00%   3.352MiB / 15.31GiB   0.02%   946B / 0B     2.55MB / 0B       1
+a95d3792f98c   wslcgui-s1-logger   0.10%   1.793MiB / 15.31GiB   0.01%   1.14kB / 0B   0B / 0B           2
+c3961e97de0e   wslcgui-s1-redis    0.32%   14.16MiB / 15.31GiB   0.09%   1.25kB / 0B   10.6MB / 0B       6
+1246fd7091bb   wslcgui-s1-pg       0.01%   107.5MiB / 15.31GiB   0.69%   1.25kB / 0B   46.8MB / 47.4MB   6

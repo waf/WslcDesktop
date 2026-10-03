@@ -1,0 +1,7 @@
+# argv: wslc rmi wslcgui-s1-noimage:latest
+# exit: 1
+# --- stdout (0 bytes)
+# --- stderr (221 bytes)
+No such image: wslcgui-s1-noimage:latest
+Error code: WSLC_E_IMAGE_NOT_FOUND
+If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.

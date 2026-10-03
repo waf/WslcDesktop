@@ -1,0 +1,65 @@
+16-alpine: Pulling from library/postgres
+e2de96513ba9: Already exists
+1b7f9cd581ee: Pulling fs layer
+210b280f9556: Pulling fs layer
+81717818649a: Pulling fs layer
+3ae6141cfd99: Pulling fs layer
+25b77f59fd95: Pulling fs layer
+6c25da34e03f: Pulling fs layer
+a88782f92806: Pulling fs layer
+d8d21be4bf02: Pulling fs layer
+6117bd39f23f: Pulling fs layer
+509688edf37b: Pulling fs layer
+25b77f59fd95: Waiting
+6c25da34e03f: Waiting
+a88782f92806: Waiting
+d8d21be4bf02: Waiting
+6117bd39f23f: Waiting
+509688edf37b: Waiting
+3ae6141cfd99: Waiting
+81717818649a: Downloading
+81717818649a: Verifying Checksum
+81717818649a: Download complete
+210b280f9556: Downloading
+1b7f9cd581ee: Download complete
+1b7f9cd581ee: Extracting
+1b7f9cd581ee: Pull complete
+210b280f9556: Download complete
+210b280f9556: Extracting
+210b280f9556: Pull complete
+81717818649a: Extracting
+81717818649a: Pull complete
+3ae6141cfd99: Downloading
+3ae6141cfd99: Download complete
+3ae6141cfd99: Extracting
+3ae6141cfd99: Pull complete
+6c25da34e03f: Downloading
+6c25da34e03f: Verifying Checksum
+6c25da34e03f: Download complete
+25b77f59fd95: Downloading
+a88782f92806: Downloading
+a88782f92806: Verifying Checksum
+a88782f92806: Download complete
+d8d21be4bf02: Downloading
+d8d21be4bf02: Download complete
+6117bd39f23f: Downloading
+6117bd39f23f: Verifying Checksum
+6117bd39f23f: Download complete
+509688edf37b: Download complete
+25b77f59fd95: Verifying Checksum
+25b77f59fd95: Download complete
+25b77f59fd95: Extracting
+25b77f59fd95: Pull complete
+6c25da34e03f: Extracting
+6c25da34e03f: Pull complete
+a88782f92806: Extracting
+a88782f92806: Pull complete
+d8d21be4bf02: Extracting
+d8d21be4bf02: Pull complete
+6117bd39f23f: Extracting
+6117bd39f23f: Pull complete
+509688edf37b: Extracting
+509688edf37b: Pull complete
+Digest: sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+Status: Downloaded newer image for postgres:16-alpine
+docker.io/library/postgres:16-alpine

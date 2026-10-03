@@ -1,0 +1,5 @@
+Untagged: wslcgui-s1-build:slow
+Deleted: sha256:8fdb607fc0233f28973374e610f64f7dfe0c5d42c0179482b29f248939cc1188
+Untagged: wslcgui-s1-build:latest
+Deleted: sha256:4c38fd9d49b0eed039913c8cc26e345524124f32ca7b215ad4d22f9995374945
+Deleted: sha256:151ffaade0e222b2219e83a88407a2ad6b946b230cd2719142428b0120bf92fe

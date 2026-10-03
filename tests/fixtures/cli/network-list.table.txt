@@ -1,0 +1,5 @@
+NETWORK ID     NAME             DRIVER    SCOPE
+776f04df0ed2   bridge           bridge    local
+b10707552f62   host             host      local
+edc6f9548710   none             null      local
+2ffa42b4d503   wslcgui-s1-net   bridge    local

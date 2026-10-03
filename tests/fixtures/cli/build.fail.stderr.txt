@@ -1,0 +1,14 @@
+[1/2] FROM docker.io/library/alpine:latest
+[1/2] CACHED
+[2/2] RUN exit 5
+process "/bin/sh -c exit 5" did not complete successfully: exit code: 5
+Dockerfile:2
+--------------------
+   1 |     FROM alpine:latest
+   2 | >>> RUN exit 5
+   3 |     
+--------------------
+ERROR: failed to solve: process "/bin/sh -c exit 5" did not complete successfully: exit code: 5
+
+Error code: E_FAIL
+If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.

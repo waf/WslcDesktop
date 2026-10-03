@@ -1,0 +1,4 @@
+{"Containers":"1","CreatedAt":"2026-09-18 07:00:00 +0700 GMT+7","CreatedSince":"2 weeks ago","Digest":"<none>","ID":"db9f02c6bde9","Repository":"debian","SharedSize":"N/A","Size":"74.8MB","Tag":"bookworm-slim","UniqueSize":"N/A"}
+{"Containers":"1","CreatedAt":"2026-09-18 04:32:46 +0700 GMT+7","CreatedSince":"2 weeks ago","Digest":"<none>","ID":"f84b0c467801","Repository":"redis","SharedSize":"N/A","Size":"39.1MB","Tag":"7-alpine","UniqueSize":"N/A"}
+{"Containers":"1","CreatedAt":"2026-09-18 04:31:24 +0700 GMT+7","CreatedSince":"2 weeks ago","Digest":"<none>","ID":"81bd698b4594","Repository":"postgres","SharedSize":"N/A","Size":"294MB","Tag":"16-alpine","UniqueSize":"N/A"}
+{"Containers":"2","CreatedAt":"2026-09-18 03:37:20 +0700 GMT+7","CreatedSince":"2 weeks ago","Digest":"<none>","ID":"320994c3b997","Repository":"alpine","SharedSize":"N/A","Size":"8.42MB","Tag":"latest","UniqueSize":"N/A"}

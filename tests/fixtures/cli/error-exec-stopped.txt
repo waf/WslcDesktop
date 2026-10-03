@@ -1,0 +1,7 @@
+# argv: wslc exec wslcgui-s1-exited echo hi
+# exit: 1
+# --- stdout (0 bytes)
+# --- stderr (279 bytes)
+Container '754ceed05ea0b4a909642df080f86be179f059a74161afa443589feb7eaa1e31' is not running.
+Error code: WSLC_E_CONTAINER_NOT_RUNNING
+If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.

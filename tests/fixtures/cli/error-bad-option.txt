@@ -1,0 +1,9 @@
+# argv: wslc list --bogus
+# exit: 1
+# --- stdout (0 bytes)
+# --- stderr (146 bytes)
+Option name was not recognized for the current command: '--bogus'
+
+Usage:  wslc list [options]
+
+Run 'wslc list --help' for more information.

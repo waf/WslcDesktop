@@ -1,0 +1,7 @@
+# argv: wslc pull wslcgui-s1-noimage-xyz:latest
+# exit: 1
+# --- stdout (0 bytes)
+# --- stderr (335 bytes)
+pull access denied for wslcgui-s1-noimage-xyz, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+Error code: WSLC_E_IMAGE_NOT_FOUND
+If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.

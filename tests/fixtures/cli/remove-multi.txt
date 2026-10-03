@@ -1,0 +1,5 @@
+wslcgui-s1-pg
+wslcgui-s1-redis
+wslcgui-s1-logger
+wslcgui-s1-deb
+wslcgui-s1-exited

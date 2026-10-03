@@ -1,0 +1,40 @@
+[
+  {
+    "Attachable": false,
+    "ConfigFrom": {
+      "Network": ""
+    },
+    "ConfigOnly": false,
+    "Containers": {
+      "1246fd7091bb6763493e014b5143cd163341ec3f034900cd2f5e84cda2e7484c": {
+        "EndpointID": "0a97e7016e19960cd06e12dc5f0307e3e4d346346a5fe6f3f679b337f5838f41",
+        "IPv4Address": "172.18.0.2/16",
+        "IPv6Address": "",
+        "MacAddress": "02:42:ac:12:00:02",
+        "Name": "wslcgui-s1-pg"
+      }
+    },
+    "Created": "2026-10-03T03:37:33.091590595Z",
+    "Driver": "bridge",
+    "EnableIPv4": true,
+    "EnableIPv6": false,
+    "IPAM": {
+      "Config": [
+        {
+          "Gateway": "172.18.0.1",
+          "Subnet": "172.18.0.0/16"
+        }
+      ],
+      "Driver": "default",
+      "Options": {}
+    },
+    "Id": "2ffa42b4d503e82dbc3625c425e950d9cde97076e388188e40bd55e11710369e",
+    "Ingress": false,
+    "Internal": false,
+    "Labels": {},
+    "Name": "wslcgui-s1-net",
+    "Options": {},
+    "Scope": "local",
+    "Status": {}
+  }
+]

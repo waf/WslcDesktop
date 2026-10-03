@@ -1,0 +1,6 @@
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                      PORTS                       NAMES
+754ceed05ea0   alpine:latest          "sh -c 'echo hello-f…"   35 seconds ago   Exited (3) 34 seconds ago                               wslcgui-s1-exited
+5fa2944e80e5   debian:bookworm-slim   "sleep infinity"         36 seconds ago   Up 35 seconds                                           wslcgui-s1-deb
+a95d3792f98c   alpine:latest          "sh -c 'i=0; while t…"   37 seconds ago   Up 36 seconds                                           wslcgui-s1-logger
+c3961e97de0e   redis:7-alpine         "docker-entrypoint.s…"   37 seconds ago   Up 36 seconds               127.0.0.1:16379->6379/tcp   wslcgui-s1-redis
+1246fd7091bb   postgres:16-alpine     "docker-entrypoint.s…"   38 seconds ago   Up 37 seconds               127.0.0.1:15432->5432/tcp   wslcgui-s1-pg

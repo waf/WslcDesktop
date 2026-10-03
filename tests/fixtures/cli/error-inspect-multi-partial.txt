@@ -1,0 +1,60 @@
+# argv: wslc container inspect wslcgui-s1-deb wslcgui-s1-doesnotexist
+# exit: 1
+# --- stdout (1396 bytes)
+[
+  {
+    "Config": {
+      "Cmd": [
+        "sleep",
+        "infinity"
+      ],
+      "Entrypoint": [],
+      "Env": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      ],
+      "Healthcheck": null,
+      "Image": "debian:bookworm-slim",
+      "Labels": {},
+      "StopTimeout": null,
+      "User": "",
+      "WorkingDir": ""
+    },
+    "Created": "2026-10-03T03:37:35.382434573Z",
+    "HostConfig": {
+      "Memory": 0,
+      "NanoCpus": 0,
+      "NetworkMode": "bridge",
+      "Ulimits": []
+    },
+    "Id": "5fa2944e80e52226a046abe345a5c8c9fae1f416f30fedc2423034d35f12bd39",
+    "Image": "sha256:db9f02c6bde9fa90cc8074c92754b2b046947392f1a857726e77f041febb7b82",
+    "Labels": {},
+    "Mounts": [],
+    "Name": "/wslcgui-s1-deb",
+    "NetworkSettings": {
+      "Networks": {
+        "bridge": {
+          "Aliases": [],
+          "DriverOpts": {},
+          "Gateway": "172.17.0.1",
+          "IPAMConfig": null,
+          "IPAddress": "172.17.0.4",
+          "IPPrefixLen": 16,
+          "Links": [],
+          "MacAddress": "02:42:ac:11:00:04"
+        }
+      }
+    },
+    "Ports": {},
+    "State": {
+      "ExitCode": 0,
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "Health": null,
+      "Running": true,
+      "StartedAt": "2026-10-03T03:37:35.966916157Z",
+      "Status": "running"
+    }
+  }
+]
+# --- stderr (48 bytes)
+Container 'wslcgui-s1-doesnotexist' not found.

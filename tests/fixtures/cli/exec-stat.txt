@@ -1,0 +1,121 @@
+##### wslc exec wslcgui-s1-logger stat -c '%F|%s|%Y|%A|%N' /etc/*   (glob expanded by sh -c inside container)
+# exit: 0
+# --- stdout
+regular file|7|1789666254|-rw-r--r--|/etc/alpine-release
+directory|4096|1789666321|drwxr-xr-x|/etc/apk
+directory|4096|1789666321|drwxr-xr-x|/etc/busybox-paths.d
+directory|4096|1789666321|drwxr-xr-x|/etc/crontabs
+regular file|89|1774381254|-rw-r--r--|/etc/fstab
+regular file|510|1774381254|-rw-r--r--|/etc/group
+regular file|13|1790998654|-rw-r--r--|/etc/hostname
+regular file|174|1790998654|-rw-r--r--|/etc/hosts
+regular file|570|1774381254|-rw-r--r--|/etc/inittab
+regular file|51|1789666254|-rw-r--r--|/etc/issue
+directory|4096|1789666321|drwxr-xr-x|/etc/logrotate.d
+directory|4096|1789666321|drwxr-xr-x|/etc/modprobe.d
+regular file|15|1774381254|-rw-r--r--|/etc/modules
+directory|4096|1789666321|drwxr-xr-x|/etc/modules-load.d
+regular file|284|1774381254|-rw-r--r--|/etc/motd
+symbolic link|12|1790998654|lrwxrwxrwx|'/etc/mtab' -> '/proc/mounts'
+directory|4096|1789666321|drwxr-xr-x|/etc/network
+regular file|205|1774381254|-rw-r--r--|/etc/nsswitch.conf
+directory|4096|1789666321|drwxr-xr-x|/etc/opt
+symbolic link|21|1789666321|lrwxrwxrwx|'/etc/os-release' -> '../usr/lib/os-release'
+regular file|702|1774381254|-rw-r--r--|/etc/passwd
+directory|4096|1789666321|drwxr-xr-x|/etc/periodic
+regular file|547|1774381254|-rw-r--r--|/etc/profile
+directory|4096|1789666321|drwxr-xr-x|/etc/profile.d
+regular file|3144|1774381254|-rw-r--r--|/etc/protocols
+regular file|48|1790998654|-rw-r--r--|/etc/resolv.conf
+directory|4096|1789666321|drwxr-xr-x|/etc/secfixes.d
+regular file|156|1768059508|-rw-r--r--|/etc/securetty
+regular file|12813|1774381254|-rw-r--r--|/etc/services
+regular file|260|1789666321|-rw-r-----|/etc/shadow
+regular file|38|1774381254|-rw-r--r--|/etc/shells
+directory|4096|1789666321|drwxr-xr-x|/etc/ssl
+directory|4096|1789666321|drwxr-xr-x|/etc/ssl1.1
+regular file|53|1774381254|-rw-r--r--|/etc/sysctl.conf
+directory|4096|1789666321|drwxr-xr-x|/etc/sysctl.d
+directory|4096|1789666321|drwxr-xr-x|/etc/udhcpc
+# --- stderr
+##### literal argv (no shell): wslc exec wslcgui-s1-logger stat -c '%F|%s|%Y|%A|%N' /etc/*  [glob passed literally]
+# exit: 1
+# --- stdout
+# --- stderr
+stat: can't stat '/etc/*': No such file or directory
+##### wslc exec wslcgui-s1-deb stat -c '%F|%s|%Y|%A|%N' /etc/*   (glob expanded by sh -c inside container)
+# exit: 0
+# --- stdout
+regular file|3040|1685030075|-rw-r--r--|'/etc/adduser.conf'
+directory|4096|1789689600|drwxr-xr-x|'/etc/alternatives'
+directory|4096|1789689600|drwxr-xr-x|'/etc/apt'
+regular file|1994|1778185982|-rw-r--r--|'/etc/bash.bashrc'
+regular file|367|1777320873|-rw-r--r--|'/etc/bindresvport.blacklist'
+directory|4096|1789689600|drwxr-xr-x|'/etc/cron.d'
+directory|4096|1789689600|drwxr-xr-x|'/etc/cron.daily'
+regular file|2969|1673214651|-rw-r--r--|'/etc/debconf.conf'
+regular file|6|1783019002|-rw-r--r--|'/etc/debian_version'
+directory|4096|1789689600|drwxr-xr-x|'/etc/default'
+regular file|1706|1685030075|-rw-r--r--|'/etc/deluser.conf'
+directory|4096|1789689600|drwxr-xr-x|'/etc/dpkg'
+regular file|685|1749229968|-rw-r--r--|'/etc/e2scrub.conf'
+regular empty file|0|1789689600|-rw-r--r--|'/etc/environment'
+regular file|37|1789689600|-rw-r--r--|'/etc/fstab'
+regular file|2584|1659132189|-rw-r--r--|'/etc/gai.conf'
+regular file|434|1789689600|-rw-r--r--|'/etc/group'
+regular file|434|1789689600|-rw-r--r--|'/etc/group-'
+regular file|364|1789689600|-rw-r-----|'/etc/gshadow'
+regular file|9|1154970849|-rw-r--r--|'/etc/host.conf'
+regular file|13|1790998655|-rw-r--r--|'/etc/hostname'
+regular file|174|1790998655|-rw-r--r--|'/etc/hosts'
+directory|4096|1789689600|drwxr-xr-x|'/etc/init.d'
+regular file|27|1783019100|-rw-r--r--|'/etc/issue'
+regular file|20|1783019100|-rw-r--r--|'/etc/issue.net'
+directory|4096|1685023897|drwxr-xr-x|'/etc/kernel'
+regular file|4523|1789689600|-rw-r--r--|'/etc/ld.so.cache'
+regular file|34|1777320873|-rw-r--r--|'/etc/ld.so.conf'
+directory|4096|1789689600|drwxr-xr-x|'/etc/ld.so.conf.d'
+regular file|191|1675935364|-rw-r--r--|'/etc/libaudit.conf'
+symbolic link|27|1789689600|lrwxrwxrwx|'/etc/localtime' -> '/usr/share/zoneinfo/Etc/UTC'
+regular file|12569|1765720801|-rw-r--r--|'/etc/login.defs'
+directory|4096|1789689600|drwxr-xr-x|'/etc/logrotate.d'
+regular file|782|1749229968|-rw-r--r--|'/etc/mke2fs.conf'
+regular file|286|1783019100|-rw-r--r--|'/etc/motd'
+symbolic link|12|1790998655|lrwxrwxrwx|'/etc/mtab' -> '/proc/mounts'
+regular file|494|1777320873|-rw-r--r--|'/etc/nsswitch.conf'
+directory|4096|1789689600|drwxr-xr-x|'/etc/opt'
+symbolic link|21|1783019100|lrwxrwxrwx|'/etc/os-release' -> '../usr/lib/os-release'
+regular file|552|1754841242|-rw-r--r--|'/etc/pam.conf'
+directory|4096|1789689600|drwxr-xr-x|'/etc/pam.d'
+regular file|839|1789689600|-rw-r--r--|'/etc/passwd'
+regular file|839|1789689600|-rw-------|'/etc/passwd-'
+regular file|769|1618084800|-rw-r--r--|'/etc/profile'
+directory|4096|1783019100|drwxr-xr-x|'/etc/profile.d'
+directory|4096|1789689600|drwxr-xr-x|'/etc/rc0.d'
+directory|4096|1755716301|drwxr-xr-x|'/etc/rc1.d'
+directory|4096|1755716301|drwxr-xr-x|'/etc/rc2.d'
+directory|4096|1755716301|drwxr-xr-x|'/etc/rc3.d'
+directory|4096|1755716301|drwxr-xr-x|'/etc/rc4.d'
+directory|4096|1755716301|drwxr-xr-x|'/etc/rc5.d'
+directory|4096|1789689600|drwxr-xr-x|'/etc/rc6.d'
+directory|4096|1789689600|drwxr-xr-x|'/etc/rcS.d'
+regular file|48|1790998655|-rw-r--r--|'/etc/resolv.conf'
+symbolic link|13|1705742827|lrwxrwxrwx|'/etc/rmt' -> '/usr/sbin/rmt'
+directory|4096|1789689600|drwxr-xr-x|'/etc/security'
+directory|4096|1789689600|drwxr-xr-x|'/etc/selinux'
+regular file|474|1789689600|-rw-r-----|'/etc/shadow'
+regular file|128|1789689600|-rw-r--r--|'/etc/shells'
+directory|4096|1789689600|drwxr-xr-x|'/etc/skel'
+regular empty file|0|1789689600|-rw-r--r--|'/etc/subgid'
+regular empty file|0|1789689600|-rw-r--r--|'/etc/subuid'
+directory|4096|1755716301|drwxr-xr-x|'/etc/systemd'
+directory|4096|1789689600|drwxr-xr-x|'/etc/terminfo'
+regular file|8|1789689600|-rw-r--r--|'/etc/timezone'
+directory|4096|1789689600|drwxr-xr-x|'/etc/update-motd.d'
+regular file|681|1673994878|-rw-r--r--|'/etc/xattr.conf'
+# --- stderr
+##### literal argv (no shell): wslc exec wslcgui-s1-deb stat -c '%F|%s|%Y|%A|%N' /etc/*  [glob passed literally]
+# exit: 1
+# --- stdout
+# --- stderr
+stat: cannot statx '/etc/*': No such file or directory
