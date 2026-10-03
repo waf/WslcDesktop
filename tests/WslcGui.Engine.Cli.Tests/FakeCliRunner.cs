@@ -48,7 +48,16 @@ internal sealed class FakeCliRunner : ICliRunner
         }
     }
 
-    public void LaunchDetached(string executable, IReadOnlyList<string> arguments) => Launched.Add((executable, arguments));
+    public void LaunchDetached(string executable, IReadOnlyList<string> arguments, bool hidden = false) => Launched.Add((executable, arguments));
+
+    /// <summary>The stdin text of the last <see cref="RunWithInputAsync"/> call.</summary>
+    public string? LastInput { get; private set; }
+
+    public Task<CliResult> RunWithInputAsync(IReadOnlyList<string> arguments, string standardInput, CancellationToken cancellationToken)
+    {
+        LastInput = standardInput;
+        return RunAsync(arguments, cancellationToken);
+    }
 
     public async IAsyncEnumerable<string> StreamLinesAsync(IReadOnlyList<string> arguments, [EnumeratorCancellation] CancellationToken cancellationToken)
     {

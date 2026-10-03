@@ -33,7 +33,8 @@ internal sealed class CliContainerQueries(ICliRunner cli) : IContainerQueries
         State: CliFormats.ParseState(dto.State),
         Status: dto.Status ?? string.Empty,
         CreatedAt: CliFormats.ParseListTimestamp(dto.CreatedAt),
-        Ports: CliFormats.ParsePorts(dto.Ports));
+        Ports: CliFormats.ParsePorts(dto.Ports),
+        Mounts: string.IsNullOrEmpty(dto.Mounts) ? [] : dto.Mounts.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 }
 
 internal sealed class CliContainerLifecycle(ICliRunner cli) : IContainerLifecycle

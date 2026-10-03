@@ -15,7 +15,7 @@ internal static class FormParts
     public static TextBlock SectionTitle(string text) => new TextBlock().Text(text).SemiBold().Margin(0, 8, 0, 0);
 
     public static TextBlock Hint(string text) =>
-        new TextBlock().Text(text).TextWrapping(TextWrapping.Wrap).WithTheme((theme, t) => t.Foreground(theme.Palette.PlaceholderText));
+        new TextBlock().Text(text).TextWrapping(TextWrapping.Wrap).WithTheme((theme, t) => t.Foreground(theme.Palette.WindowText.WithAlpha(170)));
 
     /// <summary>A label above an input.</summary>
     public static StackPanel Field(string label, FrameworkElement input) =>

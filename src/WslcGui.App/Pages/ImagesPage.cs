@@ -44,6 +44,28 @@ internal sealed class ImagesPage : UserControl, IRefreshablePage
         _grid.PrepareContainer<ImageRow>((row, _, _, _) => row.ContextMenu = rowMenu);
 
         var pullButton = PageParts.ToolButton(IconData.ArrowDownload, "Pull…", () => _ = _dialogs.ShowPullAsync());
+        var buildButton = PageParts.ToolButton(IconData.WindowDevTools, "Build…", () => _ = _dialogs.ShowBuildAsync());
+
+        var moreMenu = new ContextMenu { Placement = MenuPlacement.Below };
+        var save = new Command("images.save", "Save selected to file…");
+        var load = new Command("images.load", "Load from file…");
+        var import = new Command("images.import", "Import filesystem tarball…");
+        var push = new Command("images.push", "Push selected…");
+        var signIn = new Command("images.signIn", "Sign in to a registry…");
+        Commands.Register(save, () => _ = SaveAsync(), () => _grid.SelectedItems.Count > 0);
+        Commands.Register(load, () => _ = LoadAsync());
+        Commands.Register(import, () => _ = ImportAsync());
+        Commands.Register(push, () =>
+        {
+            if (PageParts.Targets<ImageRow>(_grid) is [var image])
+            {
+                _ = _dialogs.ShowPushAsync(image.Reference);
+            }
+        }, () => _grid.SelectedItems.Count == 1);
+        Commands.Register(signIn, () => _ = _dialogs.ShowRegistryLoginAsync());
+        moreMenu.Item(save).Item(load).Item(import).Separator().Item(push).Item(signIn);
+        var moreButton = PageParts.ToolButton(IconData.More, "More", () => { });
+        moreButton.OnClick(() => moreMenu.Show(moreButton));
         var runButton = PageParts.ToolButton(IconData.Play, "Run…", () =>
         {
             if (PageParts.Targets<ImageRow>(_grid) is [var image])
@@ -75,13 +97,50 @@ internal sealed class ImagesPage : UserControl, IRefreshablePage
         return new Grid()
             .Rows("Auto, Auto, Auto, *")
             .Children(
-                PageParts.Header("Images", pullButton, runButton, removeButton),
+                PageParts.Header("Images", pullButton, buildButton, runButton, removeButton),
                 new DockPanel().Row(1).Padding(24, 0, 24, 8).Spacing(8).Children(
-                    new StackPanel().DockRight().Horizontal().Spacing(4).Children(pruneButton, refreshButton),
+                    new StackPanel().DockRight().Horizontal().Spacing(4).Children(moreButton, pruneButton, refreshButton),
                     PageParts.SearchBox("Search name or ID", text => _vm.SearchText = text)),
                 PageParts.StatusLine(_vm).Row(2),
                 _grid.Row(3).Margin(16, 0, 16, 16),
                 PageParts.EmptyHint(_vm, "No images yet. Use Pull… to download one.").Row(3));
+    }
+
+    private async Task SaveAsync()
+    {
+        var rows = PageParts.Targets<ImageRow>(_grid);
+        if (rows.Count == 0)
+        {
+            return;
+        }
+
+        var suggested = (rows.Count == 1 ? rows[0].Reference.Replace('/', '_').Replace(':', '_') : "images") + ".tar";
+        if (await _dialogs.PickSaveFileAsync("Save images", suggested) is { } path)
+        {
+            await _vm.SaveAsync(rows, path);
+        }
+    }
+
+    private async Task LoadAsync()
+    {
+        if (await _dialogs.PickFileAsync("Load images from a tar archive") is { } path)
+        {
+            await _vm.LoadAsync(path);
+        }
+    }
+
+    private async Task ImportAsync()
+    {
+        if (await _dialogs.PickFileAsync("Import a root filesystem tarball") is not { } path)
+        {
+            return;
+        }
+
+        var name = await _dialogs.PromptAsync("Import image", "Name for the new image", "e.g. myrootfs:latest", "Import");
+        if (name is { } result)
+        {
+            await _vm.ImportAsync(path, result.Text);
+        }
     }
 
     private GridView BuildGrid()

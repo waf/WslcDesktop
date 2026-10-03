@@ -17,4 +17,6 @@ public sealed record ContainerEngine(
     IContainerFiles Files,
     IExecService Exec,
     ITerminalSessionFactory Terminals,
-    IExternalTerminalLauncher ExternalTerminal);
+    IExternalTerminalLauncher ExternalTerminal,
+    IRegistryService Registry,
+    IEngineMaintenance Maintenance);

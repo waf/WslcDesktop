@@ -8,6 +8,32 @@ public interface IImageService
     Task RemoveAsync(string image, bool force, CancellationToken cancellationToken = default);
     Task TagAsync(string source, string target, CancellationToken cancellationToken = default);
     Task PruneAsync(bool all, CancellationToken cancellationToken = default);
+
+    /// <summary>Builds an image, reporting each line of build output.</summary>
+    Task BuildAsync(BuildSpec spec, IProgress<string>? output = null, CancellationToken cancellationToken = default);
+
+    /// <summary>Saves images (with their tags) to a tar archive.</summary>
+    Task SaveAsync(IReadOnlyList<string> images, string tarPath, CancellationToken cancellationToken = default);
+
+    /// <summary>Loads images from a tar archive made by save.</summary>
+    Task LoadAsync(string tarPath, CancellationToken cancellationToken = default);
+
+    /// <summary>Creates an image from a root filesystem tarball.</summary>
+    Task ImportAsync(string tarPath, string? reference, CancellationToken cancellationToken = default);
+
+    Task PushAsync(string reference, IProgress<string>? output = null, CancellationToken cancellationToken = default);
+}
+
+/// <param name="ContextDirectory">Local folder sent to the build.</param>
+/// <param name="Dockerfile">Path to the Dockerfile; null for the context's Dockerfile.</param>
+public sealed record BuildSpec(string ContextDirectory)
+{
+    public string? Dockerfile { get; init; }
+    public string? Tag { get; init; }
+    public string? Target { get; init; }
+    public IReadOnlyDictionary<string, string> BuildArgs { get; init; } = new Dictionary<string, string>();
+    public bool NoCache { get; init; }
+    public bool Pull { get; init; }
 }
 
 /// <param name="Repository">Repository, or null for an untagged image.</param>

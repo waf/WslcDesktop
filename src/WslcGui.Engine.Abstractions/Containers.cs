@@ -39,6 +39,7 @@ public enum ContainerState
 }
 
 /// <param name="Status">Human-readable status from the engine, for example "Up 5 minutes".</param>
+/// <param name="Mounts">Named volumes and host paths mounted into the container.</param>
 public sealed record ContainerSummary(
     string Id,
     string Name,
@@ -47,7 +48,8 @@ public sealed record ContainerSummary(
     ContainerState State,
     string Status,
     DateTimeOffset? CreatedAt,
-    IReadOnlyList<PortMapping> Ports);
+    IReadOnlyList<PortMapping> Ports,
+    IReadOnlyList<string>? Mounts = null);
 
 public enum PortProtocol
 {

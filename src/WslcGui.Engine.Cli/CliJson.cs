@@ -19,7 +19,8 @@ internal sealed record ContainerListDto(
     string? CreatedAt,
     string? State,
     string? Status,
-    string? Ports);
+    string? Ports,
+    string? Mounts = null);
 
 /// <summary>One line of <c>image list --format json</c>.</summary>
 internal sealed record ImageListDto(
@@ -29,6 +30,12 @@ internal sealed record ImageListDto(
     string? Size,
     string? CreatedAt,
     string? Containers);
+
+/// <summary>One line of <c>volume list --format json</c>.</summary>
+internal sealed record VolumeListDto(string? Name, string? Driver, string? Mountpoint, string? Labels);
+
+/// <summary>One line of <c>network list --format json</c>.</summary>
+internal sealed record NetworkListDto(string? ID, string? Name, string? Driver, string? CreatedAt, string? Internal, string? IPv6);
 
 /// <summary>One line of <c>container stats --format json</c>.</summary>
 internal sealed record StatsDto(string? ID, string? Name, string? CPUPerc, string? MemUsage, string? NetIO, string? BlockIO, int? PIDs);
@@ -41,6 +48,8 @@ internal sealed record EventActorDto(string? ID, Dictionary<string, string>? Att
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 [JsonSerializable(typeof(EventDto))]
 [JsonSerializable(typeof(StatsDto))]
+[JsonSerializable(typeof(VolumeListDto))]
+[JsonSerializable(typeof(NetworkListDto))]
 [JsonSerializable(typeof(VersionDto))]
 [JsonSerializable(typeof(ContainerListDto))]
 [JsonSerializable(typeof(ImageListDto))]

@@ -32,14 +32,26 @@ internal sealed class WslcCli : ICliRunner, IDisposable
     /// <summary>Raised (on a background thread) after every short command completes. Used for diagnostics.</summary>
     public event Action<CliResult>? CommandCompleted;
 
-    public async Task<CliResult> RunAsync(IReadOnlyList<string> arguments, CancellationToken cancellationToken)
+    public Task<CliResult> RunAsync(IReadOnlyList<string> arguments, CancellationToken cancellationToken) =>
+        RunCoreAsync(arguments, standardInput: null, cancellationToken);
+
+    public Task<CliResult> RunWithInputAsync(IReadOnlyList<string> arguments, string standardInput, CancellationToken cancellationToken) =>
+        RunCoreAsync(arguments, standardInput, cancellationToken);
+
+    private async Task<CliResult> RunCoreAsync(IReadOnlyList<string> arguments, string? standardInput, CancellationToken cancellationToken)
     {
         await _concurrency.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
             var stopwatch = Stopwatch.StartNew();
-            using var process = Start(arguments);
+            using var process = Start(arguments, redirectInput: standardInput is not null);
             using var registration = KillOnCancel(process, cancellationToken);
+            if (standardInput is not null)
+            {
+                // Secrets go through stdin so they never appear in a process command line.
+                await process.StandardInput.WriteAsync(standardInput).ConfigureAwait(false);
+                process.StandardInput.Close();
+            }
 
             var stdout = process.StandardOutput.ReadToEndAsync(CancellationToken.None);
             var stderr = process.StandardError.ReadToEndAsync(CancellationToken.None);
@@ -131,12 +143,12 @@ internal sealed class WslcCli : ICliRunner, IDisposable
 
     public IReadOnlyList<string> GlobalArguments => _options.Session is { } session ? ["--session", session] : [];
 
-    public void LaunchDetached(string executable, IReadOnlyList<string> arguments)
+    public void LaunchDetached(string executable, IReadOnlyList<string> arguments, bool hidden = false)
     {
         var startInfo = new ProcessStartInfo(executable)
         {
             UseShellExecute = false,
-            CreateNoWindow = false,
+            CreateNoWindow = hidden,
         };
         foreach (var argument in arguments)
         {
@@ -159,7 +171,7 @@ internal sealed class WslcCli : ICliRunner, IDisposable
         _concurrency.Dispose();
     }
 
-    private Process Start(IReadOnlyList<string> arguments)
+    private Process Start(IReadOnlyList<string> arguments, bool redirectInput = false)
     {
         var executable = _executable.Value
             ?? throw new EngineException(EngineErrorKind.Unavailable, "wslc.exe was not found. Install or update WSL (wsl --update).");
@@ -168,7 +180,8 @@ internal sealed class WslcCli : ICliRunner, IDisposable
         {
             RedirectStandardOutput = true,
             RedirectStandardError = true,
-            RedirectStandardInput = false,
+            RedirectStandardInput = redirectInput,
+            StandardInputEncoding = redirectInput ? new UTF8Encoding(encoderShouldEmitUTF8Identifier: false) : null,
             StandardOutputEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
             StandardErrorEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
             UseShellExecute = false,

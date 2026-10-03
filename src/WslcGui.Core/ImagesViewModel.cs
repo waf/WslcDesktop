@@ -79,6 +79,24 @@ public sealed class ImagesViewModel(
         await RefreshAsync();
     }
 
+    /// <summary>Saves images (with tags) into one tar archive.</summary>
+    public Task SaveAsync(IReadOnlyList<ImageRow> rows, string tarPath) =>
+        RunFileOperationAsync(
+            () => images.SaveAsync(rows.Select(r => r.Reference).ToList(), tarPath),
+            $"Saved {(rows.Count == 1 ? rows[0].Reference : $"{rows.Count} images")} to {Path.GetFileName(tarPath)}.",
+            "Couldn't save the images");
+
+    /// <summary>Loads images from a tar archive made by save.</summary>
+    public Task LoadAsync(string tarPath) =>
+        RunFileOperationAsync(() => images.LoadAsync(tarPath), $"Loaded images from {Path.GetFileName(tarPath)}.", "Couldn't load the images");
+
+    /// <summary>Creates an image from a root filesystem tarball.</summary>
+    public Task ImportAsync(string tarPath, string reference) =>
+        RunFileOperationAsync(
+            () => images.ImportAsync(tarPath, reference.Trim().Length > 0 ? reference.Trim() : null),
+            $"Imported {Path.GetFileName(tarPath)}.",
+            "Couldn't import the image");
+
     /// <param name="all">Remove all images without containers, not just untagged (dangling) ones.</param>
     public async Task PruneAsync(bool all)
     {
@@ -98,6 +116,22 @@ public sealed class ImagesViewModel(
         catch (EngineException ex)
         {
             Ui.ShowError("Couldn't remove unused images", ex);
+        }
+
+        await RefreshAsync();
+    }
+
+    private async Task RunFileOperationAsync(Func<Task> operation, string doneText, string errorTitle)
+    {
+        try
+        {
+            Ui.ShowToast("Working…");
+            await operation();
+            Ui.ShowToast(doneText);
+        }
+        catch (EngineException ex)
+        {
+            Ui.ShowError(errorTitle, ex);
         }
 
         await RefreshAsync();

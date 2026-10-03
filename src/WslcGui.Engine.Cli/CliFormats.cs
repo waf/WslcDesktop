@@ -24,7 +24,8 @@ internal static class CliFormats
     }
 
     /// <summary>
-    /// Parses list <c>CreatedAt</c>: <c>2026-10-03 10:37:36 +0700 GMT+7</c> (local time, Go-style offset, then a zone name).
+    /// Parses Go-style list timestamps: <c>2026-10-03 10:37:36 +0700 GMT+7</c> (containers, images) and
+    /// <c>2026-10-03 03:37:32.993374191 +0000 UTC</c> (networks). Anything after the offset is a zone name and ignored.
     /// </summary>
     public static DateTimeOffset? ParseListTimestamp(string? value)
     {
@@ -39,9 +40,17 @@ internal static class CliFormats
             return null;
         }
 
+        // .NET parses at most 7 fractional digits; Go prints up to 9.
+        var time = parts[1];
+        var dot = time.IndexOf('.', StringComparison.Ordinal);
+        if (dot >= 0 && time.Length - dot - 1 > 7)
+        {
+            time = time[..(dot + 8)];
+        }
+
         // "+0700" -> "+07:00", which "zzz" understands.
         var offset = string.Concat(parts[2].AsSpan(0, 3), ":", parts[2].AsSpan(3));
-        return DateTimeOffset.TryParseExact($"{parts[0]} {parts[1]} {offset}", "yyyy-MM-dd HH:mm:ss zzz", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result)
+        return DateTimeOffset.TryParseExact($"{parts[0]} {time} {offset}", ["yyyy-MM-dd HH:mm:ss zzz", "yyyy-MM-dd HH:mm:ss.FFFFFFF zzz"], CultureInfo.InvariantCulture, DateTimeStyles.None, out var result)
             ? result
             : null;
     }

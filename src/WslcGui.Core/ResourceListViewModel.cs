@@ -98,6 +98,9 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
 
     protected IUserInteraction Ui { get; }
 
+    /// <summary>Shows an error through the app's error UI (for views reporting their own failures).</summary>
+    public void ReportError(string title, Exception exception) => Ui.ShowError(title, exception);
+
     protected TimeProvider Time => _time;
 
     /// <summary>

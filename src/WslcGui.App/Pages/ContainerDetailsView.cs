@@ -75,7 +75,7 @@ internal sealed class ContainerDetailsView : UserControl
 
         var dot = new Ellipse().Size(10, 10).CenterVertical();
         var name = new TextBlock().FontSize(ThemeFontSize.Medium).SemiBold().CenterVertical();
-        var subtitle = new TextBlock().WithTheme((theme, t) => t.Foreground(theme.Palette.PlaceholderText));
+        var subtitle = new TextBlock().WithTheme((theme, t) => t.Foreground(theme.Palette.WindowText.WithAlpha(170)));
 
         var start = PageParts.ToolButton(IconData.Play, "Start", () => _ = _vm.StartAsync());
         var stop = PageParts.ToolButton(IconData.Stop, "Stop", () => _ = _vm.StopAsync());

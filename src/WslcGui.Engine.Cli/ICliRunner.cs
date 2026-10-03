@@ -11,6 +11,9 @@ internal interface ICliRunner
 {
     Task<CliResult> RunAsync(IReadOnlyList<string> arguments, CancellationToken cancellationToken);
 
+    /// <summary>Like <see cref="RunAsync"/>, writing <paramref name="standardInput"/> to the command's stdin (for secrets).</summary>
+    Task<CliResult> RunWithInputAsync(IReadOnlyList<string> arguments, string standardInput, CancellationToken cancellationToken);
+
     /// <summary>Streams stdout lines of a long-running command (for example <c>logs -f</c> or <c>events</c>) until it exits or is cancelled.</summary>
     IAsyncEnumerable<string> StreamLinesAsync(IReadOnlyList<string> arguments, CancellationToken cancellationToken);
 
@@ -21,7 +24,8 @@ internal interface ICliRunner
     IAsyncEnumerable<CliOutputLine> StreamOutputAsync(IReadOnlyList<string> arguments, CancellationToken cancellationToken);
 
     /// <summary>Starts a process that the user interacts with directly (a terminal window). It isn't tracked or killed with the app.</summary>
-    void LaunchDetached(string executable, IReadOnlyList<string> arguments);
+    /// <param name="hidden">Don't show a console window (for helpers that open their own UI).</param>
+    void LaunchDetached(string executable, IReadOnlyList<string> arguments, bool hidden = false);
 
     /// <summary>The resolved wslc.exe path, or null if wslc isn't installed.</summary>
     string? ExecutablePath { get; }

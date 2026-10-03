@@ -4,7 +4,14 @@
     <AssemblyName>WslcGui</AssemblyName>
     <PublishAot>true</PublishAot>
     <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <ApplicationIcon>Assets/app.ico</ApplicationIcon>
+    <!-- The tray icon's Win32 struct has fixed-size buffers. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets/app.ico" LogicalName="WslcGui.app.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aprillz.MewUI.Core" />

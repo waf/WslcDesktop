@@ -101,8 +101,6 @@ public sealed class ContainersViewModel(
     /// </summary>
     public bool IsKnownRemoved(string containerId) => _showAll && AllRows.All(row => row.Id != containerId);
 
-    public void ReportError(string title, Exception exception) => Ui.ShowError(title, exception);
-
     public Task StartAsync(IReadOnlyList<ContainerRow> rows) =>
         RunAsync(rows.Where(r => !r.IsRunning).ToList(), "Starting…", "start", r => lifecycle.StartAsync(r.Id));
 

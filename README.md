@@ -4,6 +4,33 @@ A Docker-Desktop-style Windows GUI for **WSLC** (WSL Containers). It is built wi
 
 See [PLAN.md](PLAN.md) for the research, architecture, feature list and milestones.
 
+## Features
+
+- **Containers:**
+  - A list with status, CPU, memory, ports and age, plus search.
+  - Start, stop, restart, kill and remove, including bulk actions on a multi-selection; removing all stopped containers.
+  - A **Run** dialog for image, name, command, ports, environment, volumes and auto-remove, with the equivalent `wslc` command.
+  - Container details:
+    - **Logs:** follows live; filter, timestamps, pause, copy.
+    - **Stats:** CPU, memory, network and disk charts.
+    - **Files:** browse, preview, download, upload (drag and drop from Explorer works). Stopped containers are shown as a read-only snapshot.
+    - **Inspect**.
+    - **Exec:** one-off commands.
+    - **Open terminal:** `wslc exec -it` in Windows Terminal.
+- **Images:**
+  - Pull, **build** from a Dockerfile (live output, build arguments) and run.
+  - Remove and clean up.
+  - Save to, load from and import a tar file; push; registry sign-in. The password goes to `wslc` on stdin, never on the command line.
+- **Volumes:** list with "used by", create, remove, clean up, inspect.
+- **Networks:** list, create, remove, clean up, inspect.
+- **Troubleshoot:** engine details, a log of every `wslc` command the app ran (with timings and errors), copy diagnostics, open the WSLC settings file, restart the engine.
+- **Settings:** light, dark or system theme; keep running in the notification area when the window is closed.
+- **Tray icon:** a menu showing what's running, and Quit.
+
+The app never keeps the WSLC VM awake:
+- Background polling slows to every 45 s when nothing is running, and stops while the VM is idle.
+- Event and stats streams run only while containers are running.
+
 ## Requirements
 
 - Windows 11 with WSL 3.0+ (`wslc.exe` in `C:\Program Files\WSL`)
@@ -27,6 +54,8 @@ dotnet run --project src/WslcGui.App
 | `src/WslcGui.Core` | UI-agnostic view models. Depends on the abstractions only. |
 | `src/WslcGui.App` | The MewUI app. `Program.cs` is the composition root. |
 | `tests/*` | xUnit v3 tests. `tests/fixtures/cli` holds captured `wslc` output. |
+
+Run `python tools/extract-icons.py` / `python tools/make-icon.py` to regenerate the icon data and the app icon.
 
 A banned-API analyzer (`BannedSymbols.txt`) turns any use of `System.Diagnostics.Process` outside `WslcGui.Engine.Cli` into a build error.
 

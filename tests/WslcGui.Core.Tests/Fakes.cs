@@ -51,6 +51,33 @@ internal sealed class FakeEngine : IEngineInfo, IContainerQueries, IContainerLif
     public Task TagAsync(string source, string target, CancellationToken cancellationToken = default) => Record($"tag {source} {target}");
     public Task PruneAsync(bool all, CancellationToken cancellationToken = default) => Record($"image prune all={all}");
 
+    /// <summary>Lines BuildAsync and PushAsync report as output.</summary>
+    public List<string> OutputLines { get; } = [];
+
+    public async Task BuildAsync(BuildSpec spec, IProgress<string>? output = null, CancellationToken cancellationToken = default)
+    {
+        foreach (var line in OutputLines)
+        {
+            output?.Report(line);
+        }
+
+        await Record($"build {spec.ContextDirectory} tag={spec.Tag}");
+    }
+
+    public Task SaveAsync(IReadOnlyList<string> images, string tarPath, CancellationToken cancellationToken = default) => Record($"save {string.Join(',', images)} {tarPath}");
+    public Task LoadAsync(string tarPath, CancellationToken cancellationToken = default) => Record($"load {tarPath}");
+    public Task ImportAsync(string tarPath, string? reference, CancellationToken cancellationToken = default) => Record($"import {tarPath} {reference}");
+
+    public async Task PushAsync(string reference, IProgress<string>? output = null, CancellationToken cancellationToken = default)
+    {
+        foreach (var line in OutputLines)
+        {
+            output?.Report(line);
+        }
+
+        await Record($"push {reference}");
+    }
+
     private Task Record(string call) => Record<object?>(call, null);
 
     private Task<T> Record<T>(string call, T result)
