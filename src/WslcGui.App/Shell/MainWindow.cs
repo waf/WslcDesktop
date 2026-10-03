@@ -4,6 +4,7 @@ using Aprillz.MewUI.Controls;
 using WslcGui.App.Icons;
 using WslcGui.App.Pages;
 using WslcGui.Core;
+using WslcGui.Engine;
 
 namespace WslcGui.App.Shell;
 
@@ -39,8 +40,9 @@ internal sealed class MainWindow : Window
         Icon = IconSource.FromResource<MainWindow>("WslcGui.app.ico");
 
         _navigation = BuildNavigation(pages);
+        SidebarStyle.Apply(_navigation);
         Content = new DockPanel().Children(
-            BuildStatusBar(engineStatus).DockBottom(),
+            BuildEngineBanner(engineStatus).DockTop(),
             _navigation);
 
         // Refresh the page being shown: once when it's opened, then periodically in the background.
@@ -50,7 +52,6 @@ internal sealed class MainWindow : Window
         {
             if (IsVisible && WindowState != WindowState.Minimized)
             {
-                _ = engineStatus.RefreshRuntimeStateAsync();
                 _ = _currentPage?.RefreshAsync(RefreshReason.Background);
             }
         };
@@ -161,14 +162,38 @@ internal sealed class MainWindow : Window
         return navigation;
     }
 
-    private static Border BuildStatusBar(EngineStatusViewModel engineStatus) =>
-        new Border()
-            .BorderThickness(new Thickness(0, 1, 0, 0))
-            .Padding(12, 4)
-            .WithTheme((theme, border) => border.BorderBrush(theme.Palette.ControlBorder))
-            .Child(new TextBlock()
-                .Bind(TextBlock.TextProperty, engineStatus, x => x.StatusText)
-                .CenterVertical());
+    /// <summary>
+    /// Shown only when WSLC can't be used (not installed, or wslc failing), with a retry. The normal running/idle state
+    /// needs no chrome: the list pages say when the engine is idle, and Settings shows the version.
+    /// </summary>
+    private Border BuildEngineBanner(EngineStatusViewModel engineStatus)
+    {
+        var message = new TextBlock().TextWrapping(TextWrapping.Wrap).CenterVertical();
+        var retry = new Button().Content("Retry").Padding(12, 4).OnClick(() => _ = RetryAsync());
+        var banner = new Border()
+            .Padding(PageParts.Inset, 8)
+            .Background(Color.FromRgb(254, 243, 199)) // amber-100
+            .Child(new DockPanel().Spacing(12).Children(retry.DockRight(), message.Foreground(Color.FromRgb(120, 53, 15))));
+
+        void Update()
+        {
+            banner.IsVisible = engineStatus.Status is EngineHealthStatus.NotInstalled or EngineHealthStatus.Error;
+            message.Text = engineStatus.StatusText;
+        }
+
+        async Task RetryAsync()
+        {
+            await engineStatus.RefreshAsync();
+            if (engineStatus.Status == EngineHealthStatus.Ready && _currentPage is { } page)
+            {
+                await page.RefreshAsync(RefreshReason.User);
+            }
+        }
+
+        engineStatus.PropertyChanged += (_, _) => Update();
+        Update();
+        return banner;
+    }
 
     private sealed record Page(string Title, string Icon, FrameworkElement Content);
 }

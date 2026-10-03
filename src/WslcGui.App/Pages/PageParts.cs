@@ -89,7 +89,8 @@ internal static class PageParts
         where TRow : class
     {
         var hint = new TextBlock().Text(text).Center().WithTheme((theme, t) => t.Foreground(theme.Palette.WindowText.WithAlpha(170)));
-        void Update() => hint.IsVisible = vm.Items.Count == 0 && !vm.IsLoading;
+        // Not while a refresh error is showing: then the list is empty because the engine couldn't be read.
+        void Update() => hint.IsVisible = vm.Items.Count == 0 && !vm.IsLoading && vm.ErrorText is null;
         vm.Items.CollectionChanged += (_, _) => Update();
         ((INotifyPropertyChanged)vm).PropertyChanged += (_, _) => Update();
         Update();
