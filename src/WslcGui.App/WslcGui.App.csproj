@@ -10,6 +10,7 @@
     <PackageReference Include="Aprillz.MewUI.Core" />
     <PackageReference Include="Aprillz.MewUI.Platform.Win32" />
     <PackageReference Include="Aprillz.MewUI.Backend.Direct2D" />
+    <PackageReference Include="Aprillz.MewUI.MewCharts" />
   </ItemGroup>
 
   <ItemGroup>

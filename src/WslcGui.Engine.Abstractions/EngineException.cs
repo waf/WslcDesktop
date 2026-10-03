@@ -10,6 +10,8 @@ public enum EngineErrorKind
     Conflict,
     NotRunning,
     InvalidArgument,
+    /// <summary>The operation isn't possible for this object (for example listing files in an image without a shell).</summary>
+    NotSupported,
     Cancelled,
 }
 

@@ -27,6 +27,8 @@ internal static class CliErrors
         ["WSLC_E_CONTAINER_PREFIX_AMBIGUOUS"] = EngineErrorKind.InvalidArgument,
         ["WSLC_E_INVALID_SESSION_NAME"] = EngineErrorKind.InvalidArgument,
         ["ERROR_ALREADY_EXISTS"] = EngineErrorKind.Conflict,
+        ["ERROR_PATH_NOT_FOUND"] = EngineErrorKind.NotFound,
+        ["ERROR_FILE_NOT_FOUND"] = EngineErrorKind.NotFound,
         ["E_INVALIDARG"] = EngineErrorKind.InvalidArgument,
     };
 

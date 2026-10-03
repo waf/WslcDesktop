@@ -23,6 +23,8 @@ public sealed class CliEngine : IDisposable
         Logs = new CliLogSource(_cli);
         Exec = new CliExecService(_cli);
         ExternalTerminal = new CliExternalTerminal(_cli);
+        Files = new CliContainerFiles(_cli);
+        Stats = new CliStatsSource(_cli);
     }
 
     public IEngineInfo Info { get; }
@@ -33,6 +35,8 @@ public sealed class CliEngine : IDisposable
     public ILogSource Logs { get; }
     public IExecService Exec { get; }
     public IExternalTerminalLauncher ExternalTerminal { get; }
+    public IContainerFiles Files { get; }
+    public IStatsSource Stats { get; }
 
     /// <summary>The wslc command line equivalent to running <paramref name="spec"/>, for display ("show CLI command").</summary>
     public static string DescribeRun(RunSpec spec) =>

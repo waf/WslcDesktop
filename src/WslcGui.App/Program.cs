@@ -15,7 +15,14 @@ MainWindow? mainWindow = null;
 var ui = new UserInteraction(() => mainWindow);
 
 var engineStatus = new EngineStatusViewModel(engine.Info);
-using var containers = new ContainersViewModel(engine.Containers, engine.Lifecycle, engine.Info, ui, engine.Events);
+
+// The stats monitor and the containers list feed each other: stats are only sampled while containers run,
+// and the list shows the latest sample.
+ContainersViewModel? containersRef = null;
+using var stats = new StatsMonitor(engine.Stats, engine.Info, () => containersRef?.HasRunningContainers == true);
+using var containers = new ContainersViewModel(engine.Containers, engine.Lifecycle, engine.Info, ui, engine.Events, latestStats: () => stats.Latest);
+containersRef = containers;
+stats.Updated += () => containers.ApplyStats(stats.Latest);
 var images = new ImagesViewModel(engine.Images, engine.Info, ui);
 
 var dialogs = new DialogService(engine.Lifecycle, engine.Images, CliEngine.DescribeRun, ui, () => mainWindow);
@@ -30,9 +37,9 @@ Application.DispatcherUnhandledException += e =>
 };
 
 ContainerDetailsViewModel CreateContainerDetails(ContainerRow row) =>
-    new(row, containers, engine.Containers, engine.Logs, engine.Exec, engine.ExternalTerminal);
+    new(row, containers, engine.Containers, engine.Logs, engine.Exec, engine.ExternalTerminal, engine.Files, stats, ui);
 
-mainWindow = new MainWindow(engineStatus, containers, images, dialogs, CreateContainerDetails);
+mainWindow = new MainWindow(engineStatus, containers, images, dialogs, CreateContainerDetails, stats);
 Application.Run(mainWindow, () =>
 {
     _ = engineStatus.RefreshAsync();

@@ -18,6 +18,7 @@ public sealed class ContainerDetailsViewModel : ObservableObject, IDisposable
     private string _execCommand = string.Empty;
     private bool _isExecBusy;
     private readonly StringBuilder _execTranscript = new();
+    private readonly StatsMonitor _stats;
 
     public ContainerDetailsViewModel(
         ContainerRow row,
@@ -26,6 +27,9 @@ public sealed class ContainerDetailsViewModel : ObservableObject, IDisposable
         ILogSource logs,
         IExecService exec,
         IExternalTerminalLauncher terminal,
+        IContainerFiles files,
+        StatsMonitor stats,
+        IUserInteraction ui,
         TimeProvider? timeProvider = null)
     {
         _row = row;
@@ -34,8 +38,19 @@ public sealed class ContainerDetailsViewModel : ObservableObject, IDisposable
         _exec = exec;
         _terminal = terminal;
         Logs = new LogsViewModel(logs, row.Id, timeProvider);
+        Files = new FilesViewModel(files, row.Id, () => Row.State == ContainerState.Running, ui);
+        _stats = stats;
+        _stats.Updated += OnStatsUpdated;
         _containers.RowsChanged += OnContainersChanged;
     }
+
+    /// <summary>Raised (on the UI thread) when new resource usage was sampled for this container.</summary>
+    public event Action? StatsUpdated;
+
+    public FilesViewModel Files { get; }
+
+    /// <summary>Recent resource usage samples for this container, oldest first.</summary>
+    public IReadOnlyList<StatsSample> StatsHistory => _stats.History(Row.Id);
 
     public ContainerRow Row
     {
@@ -167,7 +182,16 @@ public sealed class ContainerDetailsViewModel : ObservableObject, IDisposable
     public void Dispose()
     {
         _containers.RowsChanged -= OnContainersChanged;
+        _stats.Updated -= OnStatsUpdated;
         Logs.Dispose();
+    }
+
+    private void OnStatsUpdated()
+    {
+        if (_stats.Latest.ContainsKey(Row.Id))
+        {
+            StatsUpdated?.Invoke();
+        }
     }
 
     private void AppendTranscript(string text)

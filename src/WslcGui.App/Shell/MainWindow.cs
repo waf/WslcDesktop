@@ -21,11 +21,12 @@ internal sealed class MainWindow : Window
         ContainersViewModel containers,
         ImagesViewModel images,
         DialogService dialogs,
-        Func<ContainerRow, ContainerDetailsViewModel> createContainerDetails)
+        Func<ContainerRow, ContainerDetailsViewModel> createContainerDetails,
+        StatsMonitor stats)
     {
         this.Title("WSLC Desktop").Resizable(1200, 760);
 
-        _navigation = BuildNavigation(new ContainersPage(containers, dialogs, createContainerDetails), new ImagesPage(images, dialogs));
+        _navigation = BuildNavigation(new ContainersPage(containers, dialogs, createContainerDetails, stats), new ImagesPage(images, dialogs));
         var navigation = _navigation;
         Content = new DockPanel().Children(
             BuildStatusBar(engineStatus).DockBottom(),
@@ -53,7 +54,9 @@ internal sealed class MainWindow : Window
 
     private void ShowPage(IRefreshablePage? page)
     {
+        _currentPage?.SetActive(false);
         _currentPage = page;
+        page?.SetActive(true);
         _ = page?.RefreshAsync(RefreshReason.User);
     }
 

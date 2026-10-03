@@ -12,6 +12,11 @@ namespace WslcGui.App.Pages;
 internal interface IRefreshablePage
 {
     Task RefreshAsync(RefreshReason reason);
+
+    /// <summary>Called when the page is shown (true) or hidden (false).</summary>
+    void SetActive(bool active)
+    {
+    }
 }
 
 /// <summary>Building blocks shared by the list pages.</summary>

@@ -172,7 +172,8 @@ public class ContainerDetailsViewModelTests
         _engine.Containers.Add(FakeEngine.Container("abc", "web", state));
         var list = new ContainersViewModel(_engine, _engine, _engine, _ui);
         await list.RefreshAsync(cancellationToken: Ct);
-        var details = new ContainerDetailsViewModel(list.Items[0], list, _engine, new LogsViewModelTests.FakeLogs(), _exec, _terminal);
+        var stats = new StatsMonitor(new NoStats(), _engine, () => false);
+        var details = new ContainerDetailsViewModel(list.Items[0], list, _engine, new LogsViewModelTests.FakeLogs(), _exec, _terminal, new NoFiles(), stats, _ui);
         return (list, details);
     }
 
@@ -249,6 +250,21 @@ public class ContainerDetailsViewModelTests
             LastCommand = command;
             return Error is { } error ? Task.FromException<ExecResult>(error) : Task.FromResult(Result);
         }
+    }
+
+    private sealed class NoStats : IStatsSource
+    {
+        public Task<IReadOnlyList<ContainerStats>> SnapshotAsync(IReadOnlyList<string> containerIds, CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<ContainerStats>>([]);
+    }
+
+    private sealed class NoFiles : IContainerFiles
+    {
+        public Task<IReadOnlyList<ContainerFileEntry>> ListDirectoryAsync(string containerId, string path, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+        public Task<IContainerFileSnapshot> OpenSnapshotAsync(string containerId, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+        public Task DownloadAsync(string containerId, string containerPath, string localDirectory, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+        public Task UploadAsync(string containerId, string localPath, string containerDirectory, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+        public Task<byte[]> ReadFileStartAsync(string containerId, string containerPath, int maxBytes, CancellationToken cancellationToken = default) => throw new NotSupportedException();
     }
 
     private sealed class FakeTerminal : IExternalTerminalLauncher

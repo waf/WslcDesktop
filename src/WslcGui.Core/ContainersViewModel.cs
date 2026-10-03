@@ -16,8 +16,13 @@ public sealed record ContainerRow(
     DateTimeOffset? CreatedAt,
     string CreatedText,
     /// <summary>An action in flight ("Stopping…"), shown instead of the status.</summary>
-    string? Pending)
+    string? Pending,
+    double? CpuPercent = null,
+    long? MemoryBytes = null)
 {
+    public string CpuText => CpuPercent is { } cpu ? string.Create(CultureInfo.InvariantCulture, $"{cpu:0.0}%") : string.Empty;
+    public string MemoryText => MemoryBytes is { } memory ? Formatting.Bytes(memory) : string.Empty;
+
     public string ShortId => Formatting.ShortId(Id);
     public bool IsRunning => State is ContainerState.Running or ContainerState.Restarting or ContainerState.Paused;
     public string StatusText => Pending ?? Status;
@@ -50,7 +55,8 @@ public sealed class ContainersViewModel(
     IEngineInfo engineInfo,
     IUserInteraction ui,
     IEventSource? events = null,
-    TimeProvider? timeProvider = null)
+    TimeProvider? timeProvider = null,
+    Func<IReadOnlyDictionary<string, StatsSample>>? latestStats = null)
     : ResourceListViewModel<ContainerRow>(engineInfo, ui, timeProvider), IDisposable
 {
     /// <summary>How long to wait after an event before refreshing, so a burst (create, connect, start) is one refresh.</summary>
@@ -81,6 +87,13 @@ public sealed class ContainersViewModel(
             }
         }
     }
+
+    /// <summary>Whether any container is running (or starting); stats and events are only worth reading then.</summary>
+    public bool HasRunningContainers => AllRows.Any(row => row.IsRunning);
+
+    /// <summary>Puts the latest resource usage on the rows (call when the stats monitor updates).</summary>
+    public void ApplyStats(IReadOnlyDictionary<string, StatsSample> latest) =>
+        UpdateRows(row => WithStats(row, latest), AllRows.Select(row => row.Id).ToHashSet());
 
     /// <summary>
     /// Whether the container is known to be gone. Only answerable when stopped containers are listed; otherwise a
@@ -147,11 +160,17 @@ public sealed class ContainersViewModel(
     {
         var containers = await queries.ListAsync(_showAll, cancellationToken);
         var now = Time.GetUtcNow();
+        var latest = latestStats?.Invoke();
         return containers
             .OrderByDescending(c => c.CreatedAt)
-            .Select(c => ContainerRow.From(c, now))
+            .Select(c => WithStats(ContainerRow.From(c, now), latest))
             .ToList();
     }
+
+    private static ContainerRow WithStats(ContainerRow row, IReadOnlyDictionary<string, StatsSample>? latest) =>
+        row.IsRunning && latest is not null && latest.TryGetValue(row.Id, out var sample)
+            ? row with { CpuPercent = sample.CpuPercent, MemoryBytes = sample.MemoryBytes }
+            : row with { CpuPercent = null, MemoryBytes = null };
 
     protected override bool HasActiveWork => AllRows.Any(row => row.IsRunning || row.Pending is not null);
 

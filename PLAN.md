@@ -305,7 +305,7 @@ S1 and S2 can run in parallel. S3 starts once S2's skeleton exists.
 | M2 ✅ | Run dialog, Pull dialog with progress, events-driven refresh, toasts and error handling | M1 |
 | M3 ✅ | Container detail: Logs, Inspect, Exec one-shot, external terminal (T0). **MVP release.** | M2 |
 | ~~M4~~ | ~~Embedded terminal (T1)~~. **Descoped 2026-10-03:** the external Windows Terminal (M3) covers interactive shells. Optional follow-up without an embedded control: run `pull` under ConPTY (no UI control needed) for live pull progress. | – |
-| M5 | Files tab and stats graphs | S4, M3 |
+| M5 ✅ | Files tab and stats graphs | S4, M3 |
 | M6 | Volumes, Networks, Builds/save/load, registries, tray icon, settings and troubleshoot pages | M3 |
 
 ---

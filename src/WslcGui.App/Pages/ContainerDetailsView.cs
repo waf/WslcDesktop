@@ -28,16 +28,24 @@ internal sealed class ContainerDetailsView : UserControl
 
     protected override Element OnBuild()
     {
+        var files = new ContainerFilesTab(_vm.Files);
         var tabs = new TabControl()
             .Tab("Logs", BuildLogsTab())
+            .Tab("Stats", new ContainerStatsTab(_vm))
+            .Tab("Files", files)
             .Tab("Inspect", BuildInspectTab())
             .Tab("Exec", BuildExecTab());
         tabs.OnSelectionChanged(_ =>
         {
-            if (tabs.SelectedIndex == 1 && !_inspectLoaded)
+            switch (tabs.SelectedIndex)
             {
-                _inspectLoaded = true;
-                _ = _vm.LoadInspectAsync();
+                case 2:
+                    files.Activate();
+                    break;
+                case 3 when !_inspectLoaded:
+                    _inspectLoaded = true;
+                    _ = _vm.LoadInspectAsync();
+                    break;
             }
         });
 

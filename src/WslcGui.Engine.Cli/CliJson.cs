@@ -30,6 +30,9 @@ internal sealed record ImageListDto(
     string? CreatedAt,
     string? Containers);
 
+/// <summary>One line of <c>container stats --format json</c>.</summary>
+internal sealed record StatsDto(string? ID, string? Name, string? CPUPerc, string? MemUsage, string? NetIO, string? BlockIO, int? PIDs);
+
 /// <summary><c>events --format json</c> (WSL after 3.0.1; Docker-shaped). 3.0.1 only prints text, see <see cref="CliEventSource"/>.</summary>
 internal sealed record EventDto(string? Type, string? Action, EventActorDto? Actor, long? Time, long? TimeNano);
 
@@ -37,6 +40,7 @@ internal sealed record EventActorDto(string? ID, Dictionary<string, string>? Att
 
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
 [JsonSerializable(typeof(EventDto))]
+[JsonSerializable(typeof(StatsDto))]
 [JsonSerializable(typeof(VersionDto))]
 [JsonSerializable(typeof(ContainerListDto))]
 [JsonSerializable(typeof(ImageListDto))]

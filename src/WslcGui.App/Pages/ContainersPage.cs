@@ -22,10 +22,13 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
     private readonly Border _host = new();
     private FrameworkElement? _listView;
     private ContainerDetailsViewModel? _details;
+    private readonly StatsMonitor _stats;
+    private IDisposable? _statsWatch;
 
-    public ContainersPage(ContainersViewModel vm, DialogService dialogs, Func<ContainerRow, ContainerDetailsViewModel> createDetails)
+    public ContainersPage(ContainersViewModel vm, DialogService dialogs, Func<ContainerRow, ContainerDetailsViewModel> createDetails, StatsMonitor stats)
     {
         _vm = vm;
+        _stats = stats;
         _dialogs = dialogs;
         _createDetails = createDetails;
         _grid = BuildGrid();
@@ -60,6 +63,20 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
     }
 
     public Task RefreshAsync(RefreshReason reason) => _vm.RefreshAsync(reason);
+
+    /// <summary>Resource usage (list columns and the details Stats tab) is sampled only while this page is shown.</summary>
+    public void SetActive(bool active)
+    {
+        if (active)
+        {
+            _statsWatch ??= _stats.Watch();
+        }
+        else
+        {
+            _statsWatch?.Dispose();
+            _statsWatch = null;
+        }
+    }
 
     protected override Element OnBuild()
     {
@@ -151,7 +168,7 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
         grid.Columns(
             new GridViewColumn<ContainerRow>()
                 .Header("Name")
-                .StarWidth(2, minWidth: 180)
+                .StarWidth(2, minWidth: 150)
                 .SortBy(row => row.Name, StringComparer.OrdinalIgnoreCase)
                 .Bind(
                     _ => new StackPanel().Horizontal().Spacing(8).Margin(8, 0).CenterVertical().Children(
@@ -162,11 +179,13 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
                         ((Ellipse)cell.Children[0]).Fill = new SolidColorBrush(StateColor(row));
                         ((TextBlock)cell.Children[1]).Text = row.Name;
                     }),
-            PageParts.StarTextColumn<ContainerRow, string>("Image", 2, 160, row => row.Image, row => row.Image),
-            PageParts.TextColumn<ContainerRow, string>("Status", 210, row => row.StatusText, row => row.StatusText),
-            PageParts.TextColumn<ContainerRow, string>("Ports", 150, row => row.PortsText, row => row.PortsText),
-            PageParts.TextColumn<ContainerRow, DateTimeOffset>("Created", 120, row => row.CreatedText, row => row.CreatedAt ?? DateTimeOffset.MinValue),
-            PageParts.TextColumn<ContainerRow, string>("ID", 120, row => row.ShortId, row => row.Id));
+            PageParts.StarTextColumn<ContainerRow, string>("Image", 2, 120, row => row.Image, row => row.Image),
+            PageParts.TextColumn<ContainerRow, string>("Status", 170, row => row.StatusText, row => row.StatusText),
+            PageParts.TextColumn<ContainerRow, double>("CPU", 70, row => row.CpuText, row => row.CpuPercent ?? -1, alignRight: true),
+            PageParts.TextColumn<ContainerRow, long>("Memory", 90, row => row.MemoryText, row => row.MemoryBytes ?? -1, alignRight: true),
+            PageParts.TextColumn<ContainerRow, string>("Ports", 110, row => row.PortsText, row => row.PortsText),
+            PageParts.TextColumn<ContainerRow, DateTimeOffset>("Created", 110, row => row.CreatedText, row => row.CreatedAt ?? DateTimeOffset.MinValue),
+            PageParts.TextColumn<ContainerRow, string>("ID", 110, row => row.ShortId, row => row.Id));
 
         return grid;
     }
