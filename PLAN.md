@@ -245,7 +245,7 @@ Notes on the design:
 
 ### v1 (milestones M4–M6)
 
-7. **Embedded terminal (tier T1):** `Microsoft.Terminal.Control` in a child HWND plus ConPTY running `wslc exec -it`.
+7. ~~**Embedded terminal (tier T1):**~~ *Descoped 2026-10-03: "Open terminal" in Windows Terminal (T0, M3) is enough.* Was: `Microsoft.Terminal.Control` in a child HWND plus ConPTY running `wslc exec -it`.
    - Resize, copy and paste, theme matched to the app, several tabs (MewDock).
    - Fallback to T0 if the DLL fails to load.
 8. **Files tab**
@@ -286,7 +286,7 @@ Notes on the design:
 |---|---|---|---|
 | **S1** ✅ | **CLI contract and sessions**. Done 2026-10-03: `docs/spikes/S1-cli-contract.md`, 93 fixtures in `tests/fixtures/cli` | 0.5–1 d | <ul><li>Capture JSON fixtures for `list -a`, `images`, `stats`, `info`, `version`, `inspect` (container, image, volume, network), `volume ls`, `network ls`. Store them in `tests/fixtures`.</li><li>What does `events` print (format, one JSON per line?), and does it stay open while the session is idle?</li><li>What does `pull` print when stdout is **not** a TTY? Can we parse progress from it?</li><li>Does the default CLI session persist after the CLI exits? What is the cold-start latency of the first command (VM boot)?</li><li>What do the exit codes and stderr look like for common errors (not found, already running)?</li><li>Does `logs -f -t` interleave stdout and stderr, and what is the timestamp format?</li></ul> |
 | **S2** | **MewUI app skeleton under NativeAOT** | 1 d | <ul><li>NavigationView shell, a GridView of containers fed by S1's runner via `Task.Run` → `Dispatcher.BeginInvoke`, a context menu, and the run dialog layout.</li><li>Publish with `PublishAot` with 0 warnings.</li><li>Log-view throughput: append 10k lines/s into `MultiLineTextBox` with batching and head-trim at 50k lines. Measure CPU and responsiveness.</li><li>If it struggles, evaluate vendoring MewvalonEdit.</li></ul> |
-| **S3** | **Embedded terminal** | 2 d | <ul><li>Get `Microsoft.Terminal.Control.dll` from `CI.Microsoft.Terminal.Wpf` and check that redistribution terms are acceptable.</li><li>Host it in a MewUI element, copying the WebView2/WinFormsHost child-HWND pattern.</li><li>Wire ConPTY → `wslc exec -it <id> sh`. Check `vi`, `top`, resize, copy and paste, IME, Tab key, focus moving in and out, DPI change, and NativeAOT.</li><li>**Exit:** decide between T1 and the xterm.js/WebView2 fallback.</li></ul> |
+| ~~S3~~ | **Embedded terminal**. *Descoped with M4.* | 2 d | <ul><li>Get `Microsoft.Terminal.Control.dll` from `CI.Microsoft.Terminal.Wpf` and check that redistribution terms are acceptable.</li><li>Host it in a MewUI element, copying the WebView2/WinFormsHost child-HWND pattern.</li><li>Wire ConPTY → `wslc exec -it <id> sh`. Check `vi`, `top`, resize, copy and paste, IME, Tab key, focus moving in and out, DPI change, and NativeAOT.</li><li>**Exit:** decide between T1 and the xterm.js/WebView2 fallback.</li></ul> |
 | **S4** | **Filesystem browsing** | 0.5 d | <ul><li>Check `stat -c '%F\|%s\|%Y\|%A\|%N'` listing on alpine (BusyBox), debian and ubuntu images. Cover symlinks, special characters in names and large directories.</li><li>Check the `export` + `System.Formats.Tar` path for stopped and distroless containers.</li><li>Measure `cp` in and out round-trips.</li></ul> |
 | **S5** | **SDK under NativeAOT** (optional, needed only if we want the SDK engine) | 0.5 d | <ul><li>Publish with `PublishAot` and the `Microsoft.WSL.Containers` projection.</li><li>Check activation (`GetDelegateForFunctionPointer<T>`), events, awaiting `IAsyncActionWithProgress`, and `IInputStream` interop.</li><li>Check where `wslcsdk.dll` must sit (next to the exe), and look for trim warnings.</li></ul> |
 
@@ -304,7 +304,7 @@ S1 and S2 can run in parallel. S3 starts once S2's skeleton exists.
 | M1 ✅ | `WslcGui.Engine.Cli` with fixtures and tests; health check; Containers and Images pages (read-only), then lifecycle actions | S1, S2 |
 | M2 ✅ | Run dialog, Pull dialog with progress, events-driven refresh, toasts and error handling | M1 |
 | M3 ✅ | Container detail: Logs, Inspect, Exec one-shot, external terminal (T0). **MVP release.** | M2 |
-| M4 | Embedded terminal (T1) | S3, M3 |
+| ~~M4~~ | ~~Embedded terminal (T1)~~. **Descoped 2026-10-03:** the external Windows Terminal (M3) covers interactive shells. Optional follow-up without an embedded control: run `pull` under ConPTY (no UI control needed) for live pull progress. | – |
 | M5 | Files tab and stats graphs | S4, M3 |
 | M6 | Volumes, Networks, Builds/save/load, registries, tray icon, settings and troubleshoot pages | M3 |
 
@@ -334,5 +334,5 @@ S1 and S2 can run in parallel. S3 starts once S2's skeleton exists.
    - CLI first, isolated behind the capability interfaces in §2.1.
    - No process code outside `WslcGui.Engine.Cli`; the banned-API analyzer enforces this.
    - Parts can be swapped later, for example to COM after S6.
-2. **Terminal ambition for v1:** embedded T1 (Windows Terminal engine) vs external-only T0.
+2. ~~Terminal ambition~~ **Decided (2026-10-03):** external terminal only (T0). No embedded terminal.
 3. **Platforms:** x64 only, or x64 + arm64 from the start (both MewUI and WSLC support arm64).
