@@ -24,6 +24,7 @@ internal sealed class MainWindow : Window
     private readonly NavigationView _navigation;
     private readonly ContainersViewModel _containers;
     private readonly Func<AppSettings> _settings;
+    private readonly MainWindowPages _pages;
     private IRefreshablePage? _currentPage;
     private TrayIcon? _tray;
     private bool _quitting;
@@ -32,6 +33,7 @@ internal sealed class MainWindow : Window
     {
         _containers = containers;
         _settings = settings;
+        _pages = pages;
         this.Title("WSLC Desktop").Resizable(1200, 760);
         Icon = IconSource.FromResource<MainWindow>("WslcGui.app.ico");
 
@@ -42,7 +44,7 @@ internal sealed class MainWindow : Window
 
         // Refresh the page being shown: once when it's opened, then periodically in the background.
         // Background refreshes are skipped while the engine VM is idle so the app never keeps it awake.
-        _navigation.SelectionChanged += item => ShowPage((item as Page)?.Content as IRefreshablePage);
+        _navigation.SelectionChanged += item => _ = ShowPage((item as Page)?.Content as IRefreshablePage);
         _pollTimer.Tick += () =>
         {
             if (IsVisible && WindowState != WindowState.Minimized)
@@ -69,7 +71,8 @@ internal sealed class MainWindow : Window
     public void Start()
     {
         _pollTimer.Start();
-        ShowPage((_navigation.SelectedItem as Page)?.Content as IRefreshablePage);
+        var firstLoad = ShowPage((_navigation.SelectedItem as Page)?.Content as IRefreshablePage);
+        _ = PreloadAsync(firstLoad);
         Loaded += () =>
         {
             _tray = new TrayIcon(this, "WSLC Desktop", BuildTrayMenu);
@@ -108,12 +111,26 @@ internal sealed class MainWindow : Window
         _tray?.UpdateTooltip(running == 0 ? "WSLC Desktop" : $"WSLC Desktop — {running} running");
     }
 
-    private void ShowPage(IRefreshablePage? page)
+    private Task ShowPage(IRefreshablePage? page)
     {
         _currentPage?.SetActive(false);
         _currentPage = page;
         page?.SetActive(true);
-        _ = page?.RefreshAsync(RefreshReason.User);
+        return page?.RefreshAsync(RefreshReason.User) ?? Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Loads the other list pages once the first page is up, so their first visit shows data straight away. These are
+    /// background refreshes, so they do nothing while the engine VM is idle (they never start it).
+    /// </summary>
+    private async Task PreloadAsync(Task firstLoad)
+    {
+        await firstLoad;
+        IRefreshablePage[] pages = [_pages.Images, _pages.Volumes, _pages.Networks];
+        foreach (var page in pages.Where(p => !ReferenceEquals(p, _currentPage)))
+        {
+            await page.RefreshAsync(RefreshReason.Background);
+        }
     }
 
     private static NavigationView BuildNavigation(MainWindowPages pages)

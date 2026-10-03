@@ -69,17 +69,17 @@ internal sealed class VolumesPage : UserControl, IRefreshablePage
         prune.OnClick(() => pruneMenu.Show(prune));
 
         return new Grid()
-            .Rows("Auto, Auto, Auto, *")
+            .Rows("Auto, Auto, *")
             .Children(
                 PageParts.Header("Volumes", create, removeButton),
                 new DockPanel().Row(1).Padding(24, 0, 24, 8).Spacing(8).Children(
                     new StackPanel().DockRight().Horizontal().Spacing(4).Children(
                         prune,
                         PageParts.ToolButton(IconData.ArrowClockwise, "Refresh", () => _ = _vm.RefreshAsync())),
-                    PageParts.SearchBox("Search name or container", text => _vm.SearchText = text)),
-                PageParts.StatusLine(_vm).Row(2),
-                _grid.Row(3).Margin(16, 0, 16, 16),
-                PageParts.EmptyHint(_vm, "No volumes. Volumes keep container data across container removal.").Row(3));
+                    PageParts.SearchBox("Search name or container", text => _vm.SearchText = text).DockLeft(),
+                    PageParts.StatusLine(_vm)),
+                _grid.Row(2).Margin(16, 0, 16, 16),
+                PageParts.EmptyHint(_vm, "No volumes. Volumes keep container data across container removal.").Row(2));
     }
 
     private async Task CreateAsync()
@@ -155,17 +155,17 @@ internal sealed class NetworksPage : UserControl, IRefreshablePage
         UpdateButtons();
 
         return new Grid()
-            .Rows("Auto, Auto, Auto, *")
+            .Rows("Auto, Auto, *")
             .Children(
                 PageParts.Header("Networks", create, removeButton),
                 new DockPanel().Row(1).Padding(24, 0, 24, 8).Spacing(8).Children(
                     new StackPanel().DockRight().Horizontal().Spacing(4).Children(
                         PageParts.ToolButton(IconData.Broom, "Remove unused", () => _ = _vm.PruneAsync()),
                         PageParts.ToolButton(IconData.ArrowClockwise, "Refresh", () => _ = _vm.RefreshAsync())),
-                    PageParts.SearchBox("Search name or ID", text => _vm.SearchText = text)),
-                PageParts.StatusLine(_vm).Row(2),
-                _grid.Row(3).Margin(16, 0, 16, 16),
-                PageParts.EmptyHint(_vm, "No networks.").Row(3));
+                    PageParts.SearchBox("Search name or ID", text => _vm.SearchText = text).DockLeft(),
+                    PageParts.StatusLine(_vm)),
+                _grid.Row(2).Margin(16, 0, 16, 16),
+                PageParts.EmptyHint(_vm, "No networks.").Row(2));
     }
 
     private async Task CreateAsync()

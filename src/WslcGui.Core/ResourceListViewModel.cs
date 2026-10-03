@@ -37,6 +37,7 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
     private bool _isLoading;
     private bool _hasLoaded;
     private bool _isEngineIdle;
+    private bool _isStartingEngine;
     private string? _errorText;
     private bool _refreshing;
     private bool _refreshAgain;
@@ -66,11 +67,18 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
         }
     }
 
-    /// <summary>True while the first load (which may cold-start the engine VM) is in progress.</summary>
+    /// <summary>True while the first load is in progress.</summary>
     public bool IsLoading
     {
         get => _isLoading;
         private set => SetProperty(ref _isLoading, value);
+    }
+
+    /// <summary>True while a load is waiting for the idle engine VM to start (a cold start takes seconds).</summary>
+    public bool IsStartingEngine
+    {
+        get => _isStartingEngine;
+        private set => SetProperty(ref _isStartingEngine, value);
     }
 
     /// <summary>The engine VM is idle; the list shows the last known state and background refresh is paused.</summary>
@@ -129,11 +137,12 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
         _refreshing = true;
         try
         {
+            var state = await _engineInfo.GetRuntimeStateAsync(cancellationToken);
             if (reason == RefreshReason.Background)
             {
-                var state = await _engineInfo.GetRuntimeStateAsync(cancellationToken);
+                // Never load in the background while the VM is idle: that would start it (and keep it running).
                 IsEngineIdle = state == EngineRuntimeState.Idle;
-                if (IsEngineIdle && _hasLoaded)
+                if (IsEngineIdle)
                 {
                     return;
                 }
@@ -146,6 +155,7 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
             }
 
             IsLoading = !_hasLoaded;
+            IsStartingEngine = state == EngineRuntimeState.Idle;
             _all = await LoadAsync(cancellationToken);
             _hasLoaded = true;
             _lastLoad = _time.GetUtcNow();
@@ -163,6 +173,7 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
         finally
         {
             IsLoading = false;
+            IsStartingEngine = false;
             _refreshing = false;
         }
 

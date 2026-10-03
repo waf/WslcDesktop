@@ -95,15 +95,15 @@ internal sealed class ImagesPage : UserControl, IRefreshablePage
         var refreshButton = PageParts.ToolButton(IconData.ArrowClockwise, "Refresh", () => _ = _vm.RefreshAsync());
 
         return new Grid()
-            .Rows("Auto, Auto, Auto, *")
+            .Rows("Auto, Auto, *")
             .Children(
                 PageParts.Header("Images", pullButton, buildButton, runButton, removeButton),
                 new DockPanel().Row(1).Padding(24, 0, 24, 8).Spacing(8).Children(
                     new StackPanel().DockRight().Horizontal().Spacing(4).Children(moreButton, pruneButton, refreshButton),
-                    PageParts.SearchBox("Search name or ID", text => _vm.SearchText = text)),
-                PageParts.StatusLine(_vm).Row(2),
-                _grid.Row(3).Margin(16, 0, 16, 16),
-                PageParts.EmptyHint(_vm, "No images yet. Use Pull… to download one.").Row(3));
+                    PageParts.SearchBox("Search name or ID", text => _vm.SearchText = text).DockLeft(),
+                    PageParts.StatusLine(_vm)),
+                _grid.Row(2).Margin(16, 0, 16, 16),
+                PageParts.EmptyHint(_vm, "No images yet. Use Pull… to download one.").Row(2));
     }
 
     private async Task SaveAsync()

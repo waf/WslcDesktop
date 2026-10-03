@@ -44,6 +44,39 @@ public class ContainersViewModelTests
     }
 
     [Fact]
+    public async Task Background_refresh_never_starts_an_idle_engine_even_before_the_first_load()
+    {
+        _engine.RuntimeState = EngineRuntimeState.Idle;
+        var vm = CreateViewModel();
+
+        await vm.RefreshAsync(RefreshReason.Background, Ct);
+
+        Assert.Equal(0, _engine.ListCalls);
+        Assert.True(vm.IsEngineIdle);
+    }
+
+    [Fact]
+    public async Task Starting_engine_is_only_reported_for_a_real_cold_start()
+    {
+        var vm = CreateViewModel();
+        var starting = new List<bool>();
+        vm.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(vm.IsStartingEngine))
+            {
+                starting.Add(vm.IsStartingEngine);
+            }
+        };
+
+        await vm.RefreshAsync(cancellationToken: Ct);
+        Assert.Empty(starting);
+
+        _engine.RuntimeState = EngineRuntimeState.Idle;
+        await vm.RefreshAsync(cancellationToken: Ct);
+        Assert.Equal([true, false], starting);
+    }
+
+    [Fact]
     public async Task Background_refresh_polls_while_containers_run()
     {
         _engine.Containers.Add(FakeEngine.Container("a", "web", ContainerState.Running));

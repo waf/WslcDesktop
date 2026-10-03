@@ -46,27 +46,30 @@ internal static class PageParts
             .CenterVertical()
             .OnTextChanged(onChanged);
 
-    /// <summary>A line above the grid for "starting engine", "engine idle" and refresh errors.</summary>
+    /// <summary>
+    /// "Starting engine", "engine idle" and refresh errors, shown next to the search box on one trimmed line (full text in
+    /// the tooltip). It sits in a row whose height doesn't depend on it, so it never moves the grid when it changes.
+    /// </summary>
     public static TextBlock StatusLine<TRow>(ResourceListViewModel<TRow> vm)
         where TRow : class
     {
-        var line = new TextBlock().Margin(24, 0, 24, 8).TextWrapping(TextWrapping.Wrap);
+        var line = new TextBlock().TextTrimming(TextTrimming.CharacterEllipsis).CenterVertical().Margin(8, 0);
         void Update()
         {
-            var (text, visible) = vm switch
+            var text = vm switch
             {
-                { ErrorText: { } error } => ($"⚠ {error}", true),
-                { IsLoading: true } => ("Starting the WSLC engine… (the first request after it has been idle takes a few seconds)", true),
-                { IsEngineIdle: true } => ("The WSLC engine is idle (no running containers). Showing the last known state; it starts again on demand.", true),
-                _ => (string.Empty, false),
+                { ErrorText: { } error } => $"⚠ {error}",
+                { IsStartingEngine: true } => "Starting the WSLC engine… (this takes a few seconds after it has been idle)",
+                { IsEngineIdle: true } => "Engine idle (nothing running): showing the last known state",
+                _ => string.Empty,
             };
             line.Text = text;
-            line.IsVisible = visible;
+            line.ToolTip(text.Length > 0 ? text : null);
         }
 
         vm.PropertyChanged += (_, e) =>
         {
-            if (e.PropertyName is nameof(vm.ErrorText) or nameof(vm.IsLoading) or nameof(vm.IsEngineIdle))
+            if (e.PropertyName is nameof(vm.ErrorText) or nameof(vm.IsStartingEngine) or nameof(vm.IsEngineIdle))
             {
                 Update();
             }
