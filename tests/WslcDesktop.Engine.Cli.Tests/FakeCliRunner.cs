@@ -74,7 +74,7 @@ internal static class Fixtures
     public static string Read(string name) => File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures", "cli", name));
 
     /// <summary>
-    /// Reads a combined capture written by the S1 spike:
+    /// Reads a combined capture of one wslc invocation:
     /// <c># argv: …</c>, <c># exit: N</c>, <c># --- stdout (N bytes)</c>, raw stdout, <c># --- stderr (N bytes)</c>, raw stderr.
     /// </summary>
     public static CliResult ReadResult(string name)

@@ -12,7 +12,7 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <!-- Captured wslc output (see docs/spikes/S1-cli-contract.md). Tests read these via Fixtures.Read(...). -->
+  <!-- Captured wslc output. Tests read these via Fixtures.Read(...). -->
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)fixtures\**\*" LinkBase="fixtures" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

@@ -7,7 +7,7 @@ namespace WslcDesktop.Engine.Cli;
 /// Error code: WSLC_E_CONTAINER_NOT_FOUND
 /// If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.
 /// </code>
-/// Some errors (inspect not-found, argument parsing) have no code line. See docs/spikes/S1-cli-contract.md.
+/// Some errors (inspect not-found, argument parsing) have no code line.
 /// </summary>
 internal static class CliErrors
 {

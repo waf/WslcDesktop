@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace WslcDesktop.Engine.Cli;
 
 // DTOs mirror wslc's own output and stay internal to this project; they're mapped to WslcDesktop.Engine models.
-// List output values are Docker-template strings (see docs/spikes/S1-cli-contract.md §2).
+// List output values are Docker-template strings.
 
 /// <summary><c>version --format json</c>: <c>{"Client":{"Version":"3.0.1.0"}}</c></summary>
 internal sealed record VersionDto(VersionClientDto? Client);

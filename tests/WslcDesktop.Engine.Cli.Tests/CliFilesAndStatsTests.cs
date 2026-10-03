@@ -6,7 +6,7 @@ public class CliFilesTests
 {
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
 
-    // Captured in spike S4 (docs/spikes/S4-files-and-stats.md).
+    // Captured BusyBox stat output from an alpine container.
     private const string BusyBoxOutput = """
         directory|4096|1791004864|drwxr-xr-x|/tmp/t/sub dir
         regular empty file|0|1791004864|-rw-r--r--|/tmp/t/pipe|name

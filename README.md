@@ -1,8 +1,10 @@
 # WSLC Desktop
 
-A Docker-Desktop-style Windows GUI for **WSLC** (WSL Containers). It is built with [MewUI](https://github.com/aprillz/MewUI) and published with NativeAOT.
+A Desktop Windows GUI for **WSLC** (WSL Containers).
 
-See [PLAN.md](PLAN.md) for the research, architecture, feature list and milestones.
+It aims to be fast and resource efficient; it's one self-contained `WslcDesktop.exe`
+of about 10 MB with memory usage around 90 MB. It does not need the .NET runtime;
+it's built with [MewUI](https://github.com/aprillz/MewUI) and published with NativeAOT.
 
 ## Features
 
@@ -31,7 +33,7 @@ The app never keeps the WSLC VM awake:
 - Background polling slows to every 45 s when nothing is running, and stops while the VM is idle.
 - Event and stats streams run only while containers are running.
 
-## Requirements
+## Development Requirements
 
 - Windows 11 with WSL 3.0+ (`wslc.exe` in `C:\Program Files\WSL`)
 - .NET SDK 10.0.4xx (pinned in `global.json`)
@@ -45,18 +47,4 @@ dotnet run --project src/WslcDesktop.App
 ./build/publish.ps1                 # NativeAOT → artifacts/publish/win-x64/WslcDesktop.exe
 ```
 
-## Layout
-
-| Project | Role |
-|---|---|
-| `src/WslcDesktop.Engine.Abstractions` | Engine interfaces and plain models. No implementation. |
-| `src/WslcDesktop.Engine.Cli` | The engine implemented over `wslc.exe`. **The only project allowed to start processes.** |
-| `src/WslcDesktop.Core` | UI-agnostic view models. Depends on the abstractions only. |
-| `src/WslcDesktop.App` | The MewUI app. `Program.cs` is the composition root. |
-| `tests/*` | xUnit v3 tests. `tests/fixtures/cli` holds captured `wslc` output. |
-
-A banned-API analyzer (`BannedSymbols.txt`) turns any use of `System.Diagnostics.Process` outside `WslcDesktop.Engine.Cli` into a build error.
-
-## Regenerating icons
-
-`src/WslcDesktop.App/Icons/IconData.g.cs` holds Fluent UI System Icons (MIT), taken from MewUI's Gallery. To add an icon, add its name to `tools/extract-icons.py` and run `python tools/extract-icons.py`. This needs `ref/MewUI` cloned. The app icon (`src/WslcDesktop.App/Assets/app.ico`) is drawn by `python tools/make-icon.py`, which needs Pillow.
+A banned-API analyzer (`BannedSymbols.txt`) turns any use of `System.Diagnostics.Process` outside `WslcDesktop.Engine.Cli` into a build error.  In the future we may investigate using COM calls instead of invoking `wslc.exe` to avoid the overhead of starting a new process; but the COM API is not a stable API. Restricting the use of `Process` to a single project makes it easier to switch to COM later.

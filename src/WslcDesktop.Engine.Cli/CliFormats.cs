@@ -4,7 +4,7 @@ using System.Text.Json.Serialization.Metadata;
 
 namespace WslcDesktop.Engine.Cli;
 
-/// <summary>Parsers for the Docker-template strings wslc prints in its list output (see docs/spikes/S1-cli-contract.md).</summary>
+/// <summary>Parsers for the Docker-template strings wslc prints in its list output.</summary>
 internal static class CliFormats
 {
     /// <summary>Parses JSON Lines (one compact object per line, CRLF). Empty output means no items.</summary>
