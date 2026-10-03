@@ -2,6 +2,8 @@
 
 Python scripts that regenerate checked-in assets. Run them from the repo root.
 
+`ui/` holds PowerShell scripts for driving the running app: screenshots, clicks, typing and the tray menu. See [`ui/README.md`](ui/README.md).
+
 | Script | Writes | Needs |
 |---|---|---|
 | `extract-icons.py` | `src/WslcDesktop.App/Icons/IconData.g.cs` | `ref/MewUI` cloned |
