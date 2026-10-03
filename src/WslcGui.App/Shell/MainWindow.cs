@@ -143,21 +143,23 @@ internal sealed class MainWindow : Window
             PaneDisplayMode = PaneDisplayMode.Auto,
         };
 
+        // Icons are nudged down to line up with the label text (measured against the rendered glyphs). The flat
+        // "storage" glyph needs a little more, since it reads against the lowercase letters rather than the capital.
         Page[] main =
         [
-            new("Containers", IconData.Cube, pages.Containers),
-            new("Images", IconData.Layer, pages.Images),
-            new("Volumes", IconData.Storage, pages.Volumes),
-            new("Networks", IconData.Globe, pages.Networks),
+            new("Containers", IconData.Cube, pages.Containers, 1),
+            new("Images", IconData.Layer, pages.Images, 1),
+            new("Volumes", IconData.Storage, pages.Volumes, 2),
+            new("Networks", IconData.Globe, pages.Networks, 1),
         ];
-        navigation.Items(main, p => p.Title, icon: p => IconFactory.Geometry(p.Icon), content: p => p.Content);
+        navigation.Items(main, p => p.Title, icon: NavIcon, content: p => p.Content);
 
         Page[] footer =
         [
-            new("Troubleshoot", IconData.Wrench, pages.Troubleshoot),
-            new("Settings", IconData.Settings, pages.Settings),
+            new("Troubleshoot", IconData.Wrench, pages.Troubleshoot, 1),
+            new("Settings", IconData.Settings, pages.Settings, 1),
         ];
-        navigation.FooterItems(footer, p => p.Title, icon: p => IconFactory.Geometry(p.Icon), content: p => p.Content);
+        navigation.FooterItems(footer, p => p.Title, icon: NavIcon, content: p => p.Content);
         navigation.SelectedIndex = 0;
         return navigation;
     }
@@ -195,5 +197,8 @@ internal sealed class MainWindow : Window
         return banner;
     }
 
-    private sealed record Page(string Title, string Icon, FrameworkElement Content);
+    // NavigationView hosts item icons in a 20 x 20 slot.
+    private static Element NavIcon(Page page) => IconFactory.CreateNudged(page.Icon, 20, page.IconOffsetY);
+
+    private sealed record Page(string Title, string Icon, FrameworkElement Content, double IconOffsetY);
 }

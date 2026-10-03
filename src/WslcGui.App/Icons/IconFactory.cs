@@ -23,4 +23,11 @@ internal static class IconFactory
             static (Color color) => (Brush)new SolidColorBrush(color));
         return icon.Size(size, size);
     }
+
+    /// <summary>
+    /// An icon moved down by <paramref name="offsetY"/> pixels inside a box of the same size, for lining it up with
+    /// text: a text block's glyphs sit lower than its box center, and flat icons look high next to lowercase text.
+    /// </summary>
+    public static Canvas CreateNudged(string pathData, double size, double offsetY) =>
+        new Canvas().Size(size, size).Children(Create(pathData, size).CanvasTop(offsetY));
 }
