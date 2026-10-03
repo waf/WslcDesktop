@@ -22,9 +22,15 @@ internal interface IRefreshablePage
 /// <summary>Building blocks shared by the list pages.</summary>
 internal static class PageParts
 {
+    /// <summary>
+    /// Horizontal inset of page content from the window/pane edges. Headers, toolbars and grids all use it so their
+    /// left and right edges line up.
+    /// </summary>
+    public const double Inset = 16;
+
     public static DockPanel Header(string title, params FrameworkElement[] actions) =>
         new DockPanel()
-            .Padding(24, 16, 24, 12)
+            .Padding(Inset, 16, Inset, 12)
             .Spacing(12)
             .Children(
                 new StackPanel().DockRight().Horizontal().Spacing(4).Children(actions),

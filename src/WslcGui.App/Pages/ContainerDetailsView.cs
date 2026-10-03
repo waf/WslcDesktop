@@ -61,7 +61,7 @@ internal sealed class ContainerDetailsView : UserControl
             .Rows("Auto, *")
             .Children(
                 BuildHeader(),
-                tabs.Row(1).Margin(16, 0, 16, 16));
+                tabs.Row(1).Margin(PageParts.Inset, 0, PageParts.Inset, 16));
     }
 
     private DockPanel BuildHeader()
@@ -113,7 +113,7 @@ internal sealed class ContainerDetailsView : UserControl
         Update();
 
         return new DockPanel()
-            .Padding(12, 12, 24, 8)
+            .Padding(8, 12, PageParts.Inset, 8)
             .Spacing(8)
             .Children(
                 back.DockLeft().Top(),

@@ -41,7 +41,7 @@ internal sealed class SettingsPage : UserControl
         UpdateVersion();
 
         return new ScrollViewer().AutoVerticalScroll().NoHorizontalScroll().Content(
-            new StackPanel().Vertical().Spacing(24).Padding(24, 16).Children(
+            new StackPanel().Vertical().Spacing(24).Padding(PageParts.Inset, 16).Children(
                 new TextBlock().Text("Settings").FontSize(ThemeFontSize.Medium).SemiBold(),
                 Section(
                     "Appearance",
@@ -114,11 +114,11 @@ internal sealed class TroubleshootPage : UserControl, IRefreshablePage
                     PageParts.ToolButton(IconData.Copy, "Copy diagnostics", () => PageParts.CopyToClipboard(_vm.GetDiagnosticsText())),
                     PageParts.ToolButton(IconData.Settings, "WSLC settings file", _vm.OpenEngineSettings),
                     PageParts.ToolButton(IconData.Wrench, "Restart engine", () => _ = _vm.RestartEngineAsync())),
-                FormParts.BoundText(_vm, nameof(_vm.DetailsError), x => x.DetailsError, FormParts.ErrorColor).Row(1).Margin(24, 0, 24, 8),
-                new TextBlock().Text("Engine").SemiBold().Row(2).Margin(24, 0, 24, 6),
-                detailsGrid.Row(3).Margin(16, 0, 16, 12),
-                new TextBlock().Text("Recent wslc commands").SemiBold().Row(4).Margin(24, 0, 24, 6),
-                commandsGrid.Row(5).Margin(16, 0, 16, 16));
+                FormParts.BoundText(_vm, nameof(_vm.DetailsError), x => x.DetailsError, FormParts.ErrorColor).Row(1).Margin(PageParts.Inset, 0, PageParts.Inset, 8),
+                new TextBlock().Text("Engine").SemiBold().Row(2).Margin(PageParts.Inset, 0, PageParts.Inset, 6),
+                detailsGrid.Row(3).Margin(PageParts.Inset, 0, PageParts.Inset, 12),
+                new TextBlock().Text("Recent wslc commands").SemiBold().Row(4).Margin(PageParts.Inset, 0, PageParts.Inset, 6),
+                commandsGrid.Row(5).Margin(PageParts.Inset, 0, PageParts.Inset, 16));
     }
 
     /// <summary>Holds a replaceable list for a grid.</summary>

@@ -34,7 +34,8 @@ internal sealed class MainWindow : Window
         _containers = containers;
         _settings = settings;
         _pages = pages;
-        this.Title("WSLC Desktop").Resizable(1200, 760);
+        // Windows have a default padding; the pane and status bar should run to the window edges.
+        this.Title("WSLC Desktop").Resizable(1200, 760).Padding(0);
         Icon = IconSource.FromResource<MainWindow>("WslcGui.app.ico");
 
         _navigation = BuildNavigation(pages);

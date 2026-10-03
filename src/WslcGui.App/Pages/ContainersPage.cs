@@ -140,13 +140,13 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
             .Rows("Auto, Auto, *")
             .Children(
                 PageParts.Header("Containers", runButton, startButton, stopButton, restartButton, removeButton),
-                new DockPanel().Row(1).Padding(24, 0, 24, 8).Spacing(8).Children(
+                new DockPanel().Row(1).Padding(PageParts.Inset, 0, PageParts.Inset, 8).Spacing(8).Children(
                     new StackPanel().DockRight().Horizontal().Spacing(4).Children(pruneButton, refreshButton),
                     new StackPanel().DockLeft().Horizontal().Spacing(8).Children(
                         PageParts.SearchBox("Search name, image or ID", text => _vm.SearchText = text),
                         showAll),
                     PageParts.StatusLine(_vm)),
-                _grid.Row(2).Margin(16, 0, 16, 16),
+                _grid.Row(2).Margin(PageParts.Inset, 0, PageParts.Inset, 16),
                 PageParts.EmptyHint(_vm, "No containers yet. Use Run… to start one.").Row(2));
 
         _host.Child = _listView;
