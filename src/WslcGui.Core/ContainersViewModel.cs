@@ -49,10 +49,25 @@ public sealed class ContainersViewModel(
     IContainerLifecycle lifecycle,
     IEngineInfo engineInfo,
     IUserInteraction ui,
+    IEventSource? events = null,
     TimeProvider? timeProvider = null)
-    : ResourceListViewModel<ContainerRow>(engineInfo, ui, timeProvider)
+    : ResourceListViewModel<ContainerRow>(engineInfo, ui, timeProvider), IDisposable
 {
+    /// <summary>How long to wait after an event before refreshing, so a burst (create, connect, start) is one refresh.</summary>
+    public static readonly TimeSpan EventDebounce = TimeSpan.FromMilliseconds(250);
+
+    /// <summary>Background poll interval while events are being watched; events cover state changes in between.</summary>
+    public static readonly TimeSpan WatchedPollInterval = TimeSpan.FromSeconds(15);
+
     private bool _showAll = true;
+    private CancellationTokenSource? _watch;
+    private bool _eventRefreshQueued;
+
+    /// <summary>
+    /// Whether engine events are being watched. Only while containers are running: an open event stream keeps the
+    /// engine VM alive, and with nothing running there is nothing to watch.
+    /// </summary>
+    public bool IsWatchingEvents => _watch is not null;
 
     /// <summary>Include stopped containers.</summary>
     public bool ShowAll
@@ -131,6 +146,95 @@ public sealed class ContainersViewModel(
     }
 
     protected override bool HasActiveWork => AllRows.Any(row => row.IsRunning || row.Pending is not null);
+
+    protected override TimeSpan ActivePollInterval => IsWatchingEvents ? WatchedPollInterval : TimeSpan.Zero;
+
+    protected override void OnLoaded()
+    {
+        if (AllRows.Any(row => row.IsRunning))
+        {
+            StartWatching();
+        }
+        else
+        {
+            StopWatching();
+        }
+    }
+
+    public void Dispose() => StopWatching();
+
+    public void StopWatching()
+    {
+        if (_watch is { } watch)
+        {
+            _watch = null;
+            watch.Cancel();
+            watch.Dispose();
+            OnPropertyChanged(nameof(IsWatchingEvents));
+        }
+    }
+
+    private void StartWatching()
+    {
+        if (events is null || _watch is not null)
+        {
+            return;
+        }
+
+        _watch = new CancellationTokenSource();
+        OnPropertyChanged(nameof(IsWatchingEvents));
+        _ = WatchAsync(events, _watch);
+    }
+
+    private async Task WatchAsync(IEventSource source, CancellationTokenSource watch)
+    {
+        try
+        {
+            await foreach (var engineEvent in source.WatchAsync(watch.Token))
+            {
+                if (engineEvent.Type == "container")
+                {
+                    _ = RefreshSoonAsync();
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (EngineException)
+        {
+            // The stream broke; polling continues at the normal rate and the next load restarts watching.
+        }
+        finally
+        {
+            if (ReferenceEquals(_watch, watch))
+            {
+                _watch = null;
+                watch.Dispose();
+                OnPropertyChanged(nameof(IsWatchingEvents));
+            }
+        }
+    }
+
+    private async Task RefreshSoonAsync()
+    {
+        if (_eventRefreshQueued)
+        {
+            return;
+        }
+
+        _eventRefreshQueued = true;
+        try
+        {
+            await Task.Delay(EventDebounce, Time);
+        }
+        finally
+        {
+            _eventRefreshQueued = false;
+        }
+
+        await RefreshAsync(RefreshReason.Event);
+    }
 
     protected override string KeyOf(ContainerRow row) => row.Id;
 

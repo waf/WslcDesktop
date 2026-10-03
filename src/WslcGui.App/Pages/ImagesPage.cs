@@ -1,6 +1,7 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 
+using WslcGui.App.Dialogs;
 using WslcGui.App.Icons;
 using WslcGui.Core;
 
@@ -9,11 +10,13 @@ namespace WslcGui.App.Pages;
 internal sealed class ImagesPage : UserControl, IRefreshablePage
 {
     private readonly ImagesViewModel _vm;
+    private readonly DialogService _dialogs;
     private readonly GridView _grid;
 
-    public ImagesPage(ImagesViewModel vm)
+    public ImagesPage(ImagesViewModel vm, DialogService dialogs)
     {
         _vm = vm;
+        _dialogs = dialogs;
         _grid = BuildGrid();
         Build();
     }
@@ -22,22 +25,38 @@ internal sealed class ImagesPage : UserControl, IRefreshablePage
 
     protected override Element OnBuild()
     {
+        var run = new Command("images.run", "Run…");
         var remove = new Command("images.remove", "Remove");
         var copyReference = new Command("images.copyReference", "Copy name");
         var copyId = new Command("images.copyId", "Copy ID");
+        Commands.Register(run, (ImageRow row) => _ = _dialogs.ShowRunAsync(row.Reference));
         Commands.Register(remove, (ImageRow row) => _ = _vm.RemoveAsync(PageParts.Targets(_grid, row)));
         Commands.Register(copyReference, (ImageRow row) => PageParts.CopyToClipboard(row.Reference));
         Commands.Register(copyId, (ImageRow row) => PageParts.CopyToClipboard(row.Id));
 
         var rowMenu = new ContextMenu()
+            .Item(run)
+            .Separator()
             .Item(remove)
             .Separator()
             .Item(copyReference)
             .Item(copyId);
         _grid.PrepareContainer<ImageRow>((row, _, _, _) => row.ContextMenu = rowMenu);
 
+        var pullButton = PageParts.ToolButton(IconData.ArrowDownload, "Pull…", () => _ = _dialogs.ShowPullAsync());
+        var runButton = PageParts.ToolButton(IconData.Play, "Run…", () =>
+        {
+            if (PageParts.Targets<ImageRow>(_grid) is [var image])
+            {
+                _ = _dialogs.ShowRunAsync(image.Reference);
+            }
+        });
         var removeButton = PageParts.ToolButton(IconData.Delete, "Remove", () => _ = _vm.RemoveAsync(PageParts.Targets<ImageRow>(_grid)));
-        void UpdateButtons() => removeButton.IsEnabled = _grid.SelectedItems.Count > 0;
+        void UpdateButtons()
+        {
+            runButton.IsEnabled = _grid.SelectedItems.Count == 1;
+            removeButton.IsEnabled = _grid.SelectedItems.Count > 0;
+        }
         _grid.SelectedIndicesChanged += UpdateButtons;
         _vm.Items.CollectionChanged += (_, _) => UpdateButtons();
         UpdateButtons();
@@ -56,13 +75,13 @@ internal sealed class ImagesPage : UserControl, IRefreshablePage
         return new Grid()
             .Rows("Auto, Auto, Auto, *")
             .Children(
-                PageParts.Header("Images", removeButton),
+                PageParts.Header("Images", pullButton, runButton, removeButton),
                 new DockPanel().Row(1).Padding(24, 0, 24, 8).Spacing(8).Children(
                     new StackPanel().DockRight().Horizontal().Spacing(4).Children(pruneButton, refreshButton),
                     PageParts.SearchBox("Search name or ID", text => _vm.SearchText = text)),
                 PageParts.StatusLine(_vm).Row(2),
                 _grid.Row(3).Margin(16, 0, 16, 16),
-                PageParts.EmptyHint(_vm, "No images. Pull one with 'wslc pull alpine'.").Row(3));
+                PageParts.EmptyHint(_vm, "No images yet. Use Pull… to download one.").Row(3));
     }
 
     private GridView BuildGrid()

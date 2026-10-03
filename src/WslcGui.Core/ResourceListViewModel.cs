@@ -11,6 +11,9 @@ public enum RefreshReason
 
     /// <summary>A periodic poll. Skipped while the engine VM is idle so polling never wakes it.</summary>
     Background,
+
+    /// <summary>An engine event said something changed. Always queries the engine (which is up, since it sent the event).</summary>
+    Event,
 }
 
 /// <summary>
@@ -36,6 +39,7 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
     private bool _isEngineIdle;
     private string? _errorText;
     private bool _refreshing;
+    private bool _refreshAgain;
 
     protected ResourceListViewModel(IEngineInfo engineInfo, IUserInteraction ui, TimeProvider? timeProvider)
     {
@@ -96,10 +100,20 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
     /// </summary>
     protected virtual bool HasActiveWork => false;
 
+    /// <summary>Minimum time between background refreshes while <see cref="HasActiveWork"/> (zero: every poll tick).</summary>
+    protected virtual TimeSpan ActivePollInterval => TimeSpan.Zero;
+
+    /// <summary>Called after each successful load, on the UI thread.</summary>
+    protected virtual void OnLoaded()
+    {
+    }
+
     public async Task RefreshAsync(RefreshReason reason = RefreshReason.User, CancellationToken cancellationToken = default)
     {
         if (_refreshing)
         {
+            // A user or event refresh must not be lost: run once more after the current one.
+            _refreshAgain |= reason != RefreshReason.Background;
             return;
         }
 
@@ -115,7 +129,8 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
                     return;
                 }
 
-                if (_hasLoaded && !HasActiveWork && _time.GetUtcNow() - _lastLoad < QuietPollInterval)
+                var interval = HasActiveWork ? ActivePollInterval : QuietPollInterval;
+                if (_hasLoaded && _time.GetUtcNow() - _lastLoad < interval)
                 {
                     return;
                 }
@@ -129,6 +144,7 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
             ErrorText = null;
             OnPropertyChanged(nameof(TotalCount));
             ApplyFilter();
+            OnLoaded();
         }
         catch (EngineException ex)
         {
@@ -138,6 +154,12 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
         {
             IsLoading = false;
             _refreshing = false;
+        }
+
+        if (_refreshAgain)
+        {
+            _refreshAgain = false;
+            await RefreshAsync(RefreshReason.User, cancellationToken);
         }
     }
 

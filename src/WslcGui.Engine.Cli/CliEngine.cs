@@ -19,12 +19,18 @@ public sealed class CliEngine : IDisposable
         Containers = new CliContainerQueries(_cli);
         Lifecycle = new CliContainerLifecycle(_cli);
         Images = new CliImageService(_cli);
+        Events = new CliEventSource(_cli);
     }
 
     public IEngineInfo Info { get; }
     public IContainerQueries Containers { get; }
     public IContainerLifecycle Lifecycle { get; }
     public IImageService Images { get; }
+    public IEventSource Events { get; }
+
+    /// <summary>The wslc command line equivalent to running <paramref name="spec"/>, for display ("show CLI command").</summary>
+    public static string DescribeRun(RunSpec spec) =>
+        CliCommandLine.Format(["wslc", .. CliContainerLifecycle.BuildCreateArguments("run", spec)]);
 
     /// <summary>Raised on a background thread after each wslc command completes (for diagnostics views).</summary>
     public event Action<CliCommandTrace>? CommandCompleted;

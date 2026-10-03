@@ -2,6 +2,7 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Rendering;
 
+using WslcGui.App.Dialogs;
 using WslcGui.App.Icons;
 using WslcGui.Core;
 using WslcGui.Engine;
@@ -15,11 +16,13 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
     private static readonly Color s_stopped = Color.FromRgb(140, 140, 140);
 
     private readonly ContainersViewModel _vm;
+    private readonly DialogService _dialogs;
     private readonly GridView _grid;
 
-    public ContainersPage(ContainersViewModel vm)
+    public ContainersPage(ContainersViewModel vm, DialogService dialogs)
     {
         _vm = vm;
+        _dialogs = dialogs;
         _grid = BuildGrid();
         Build();
     }
@@ -74,6 +77,7 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
         _vm.Items.CollectionChanged += (_, _) => UpdateButtons();
         UpdateButtons();
 
+        var runButton = PageParts.ToolButton(IconData.Add, "Run…", () => _ = _dialogs.ShowRunAsync());
         var pruneButton = PageParts.ToolButton(IconData.Broom, "Remove stopped", () => _ = _vm.PruneAsync());
         var refreshButton = PageParts.ToolButton(IconData.ArrowClockwise, "Refresh", () => _ = _vm.RefreshAsync());
         var showAll = new CheckBox().Content("Show stopped").IsChecked(_vm.ShowAll).CenterVertical().Margin(8, 0)
@@ -82,7 +86,7 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
         return new Grid()
             .Rows("Auto, Auto, Auto, *")
             .Children(
-                PageParts.Header("Containers", startButton, stopButton, restartButton, removeButton),
+                PageParts.Header("Containers", runButton, startButton, stopButton, restartButton, removeButton),
                 new DockPanel().Row(1).Padding(24, 0, 24, 8).Spacing(8).Children(
                     new StackPanel().DockRight().Horizontal().Spacing(4).Children(pruneButton, refreshButton),
                     new StackPanel().Horizontal().Spacing(8).Children(
@@ -90,7 +94,7 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
                         showAll)),
                 PageParts.StatusLine(_vm).Row(2),
                 _grid.Row(3).Margin(16, 0, 16, 16),
-                PageParts.EmptyHint(_vm, "No containers. Run one from the Images page, or with 'wslc run'.").Row(3));
+                PageParts.EmptyHint(_vm, "No containers yet. Use Run… to start one.").Row(3));
     }
 
     private List<ContainerRow> Selected() => PageParts.Targets<ContainerRow>(_grid).ToList();

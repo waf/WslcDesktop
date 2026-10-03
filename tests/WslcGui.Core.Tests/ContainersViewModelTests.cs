@@ -13,7 +13,7 @@ public class ContainersViewModelTests
 
     private readonly FakeTimeProvider _time = new(new DateTimeOffset(2026, 10, 3, 12, 0, 0, TimeSpan.Zero));
 
-    private ContainersViewModel CreateViewModel() => new(_engine, _engine, _engine, _ui, _time);
+    private ContainersViewModel CreateViewModel() => new(_engine, _engine, _engine, _ui, timeProvider: _time);
 
     [Fact]
     public async Task Refresh_lists_newest_first()

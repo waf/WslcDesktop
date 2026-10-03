@@ -1,6 +1,7 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 
+using WslcGui.App.Dialogs;
 using WslcGui.App.Icons;
 using WslcGui.App.Pages;
 using WslcGui.Core;
@@ -15,11 +16,11 @@ internal sealed class MainWindow : Window
     private readonly NavigationView _navigation;
     private IRefreshablePage? _currentPage;
 
-    public MainWindow(EngineStatusViewModel engineStatus, ContainersViewModel containers, ImagesViewModel images)
+    public MainWindow(EngineStatusViewModel engineStatus, ContainersViewModel containers, ImagesViewModel images, DialogService dialogs)
     {
         this.Title("WSLC Desktop").Resizable(1200, 760);
 
-        _navigation = BuildNavigation(new ContainersPage(containers), new ImagesPage(images));
+        _navigation = BuildNavigation(new ContainersPage(containers, dialogs), new ImagesPage(images, dialogs));
         var navigation = _navigation;
         Content = new DockPanel().Children(
             BuildStatusBar(engineStatus).DockBottom(),
@@ -32,6 +33,7 @@ internal sealed class MainWindow : Window
         {
             if (WindowState != WindowState.Minimized)
             {
+                _ = engineStatus.RefreshRuntimeStateAsync();
                 _ = _currentPage?.RefreshAsync(RefreshReason.Background);
             }
         };
