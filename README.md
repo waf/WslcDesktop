@@ -55,10 +55,8 @@ dotnet run --project src/WslcGui.App
 | `src/WslcGui.App` | The MewUI app. `Program.cs` is the composition root. |
 | `tests/*` | xUnit v3 tests. `tests/fixtures/cli` holds captured `wslc` output. |
 
-Run `python tools/extract-icons.py` / `python tools/make-icon.py` to regenerate the icon data and the app icon.
-
 A banned-API analyzer (`BannedSymbols.txt`) turns any use of `System.Diagnostics.Process` outside `WslcGui.Engine.Cli` into a build error.
 
 ## Regenerating icons
 
-`src/WslcGui.App/Icons/IconData.g.cs` holds Fluent UI System Icons (MIT), taken from MewUI's Gallery. To add an icon, add its name to `tools/extract-icons.py` and run `python tools/extract-icons.py`. This needs `ref/MewUI` cloned.
+`src/WslcGui.App/Icons/IconData.g.cs` holds Fluent UI System Icons (MIT), taken from MewUI's Gallery. To add an icon, add its name to `tools/extract-icons.py` and run `python tools/extract-icons.py`. This needs `ref/MewUI` cloned. The app icon (`src/WslcGui.App/Assets/app.ico`) is drawn by `python tools/make-icon.py`, which needs Pillow.
