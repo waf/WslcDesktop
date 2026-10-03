@@ -10,13 +10,21 @@ public sealed class CliEngine : IDisposable
 
     public CliEngine(WslcCliOptions? options = null)
     {
-        _cli = new WslcCli(options ?? new WslcCliOptions());
+        options ??= new WslcCliOptions();
+        _cli = new WslcCli(options);
         _cli.CommandCompleted += result => CommandCompleted?.Invoke(
             new CliCommandTrace(result.Arguments, result.ExitCode, result.Duration, result.StdErr));
-        Info = new CliEngineInfo(_cli);
+
+        Info = new CliEngineInfo(_cli, options.Session);
+        Containers = new CliContainerQueries(_cli);
+        Lifecycle = new CliContainerLifecycle(_cli);
+        Images = new CliImageService(_cli);
     }
 
     public IEngineInfo Info { get; }
+    public IContainerQueries Containers { get; }
+    public IContainerLifecycle Lifecycle { get; }
+    public IImageService Images { get; }
 
     /// <summary>Raised on a background thread after each wslc command completes (for diagnostics views).</summary>
     public event Action<CliCommandTrace>? CommandCompleted;

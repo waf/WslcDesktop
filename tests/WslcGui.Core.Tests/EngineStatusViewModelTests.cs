@@ -36,5 +36,7 @@ public class EngineStatusViewModelTests
             Task.FromResult(health.Version ?? throw new EngineException(EngineErrorKind.Unavailable, "missing"));
 
         public Task<EngineHealth> CheckHealthAsync(CancellationToken cancellationToken = default) => Task.FromResult(health);
+
+        public Task<EngineRuntimeState> GetRuntimeStateAsync(CancellationToken cancellationToken = default) => Task.FromResult(EngineRuntimeState.Running);
     }
 }

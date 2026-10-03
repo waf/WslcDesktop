@@ -6,6 +6,20 @@ public interface IEngineInfo
 
     /// <summary>Checks that the engine can be used at all, without throwing for the expected failure cases.</summary>
     Task<EngineHealth> CheckHealthAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Whether the engine's VM is currently up. Must not start the VM. Callers use this to avoid waking an idle
+    /// engine with background polling (the VM idles out ~30 s after the last container stops; a cold start takes seconds).
+    /// </summary>
+    Task<EngineRuntimeState> GetRuntimeStateAsync(CancellationToken cancellationToken = default);
+}
+
+public enum EngineRuntimeState
+{
+    Unknown,
+    Running,
+    /// <summary>The VM is down. The next command that needs it starts it (cold start).</summary>
+    Idle,
 }
 
 public sealed record EngineVersion(string ClientVersion);

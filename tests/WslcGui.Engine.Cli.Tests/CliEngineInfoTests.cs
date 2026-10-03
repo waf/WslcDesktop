@@ -7,7 +7,7 @@ public class CliEngineInfoTests
     {
         var cli = new FakeCliRunner().Returns("version --format json", """{"Client":{"Version":"3.0.1.0"}}""");
 
-        var version = await new CliEngineInfo(cli).GetVersionAsync(TestContext.Current.CancellationToken);
+        var version = await new CliEngineInfo(cli, session: null).GetVersionAsync(TestContext.Current.CancellationToken);
 
         Assert.Equal("3.0.1.0", version.ClientVersion);
     }
@@ -17,7 +17,7 @@ public class CliEngineInfoTests
     {
         var cli = new FakeCliRunner().Returns("version --format json", "", exitCode: 1, stderr: "The WSL service is not available.\r\n");
 
-        var health = await new CliEngineInfo(cli).CheckHealthAsync(TestContext.Current.CancellationToken);
+        var health = await new CliEngineInfo(cli, session: null).CheckHealthAsync(TestContext.Current.CancellationToken);
 
         Assert.Equal(EngineHealthStatus.Error, health.Status);
         Assert.Equal("The WSL service is not available.", health.Message);
@@ -28,7 +28,7 @@ public class CliEngineInfoTests
     {
         var cli = new FakeCliRunner().Returns("version --format json", "not json");
 
-        var ex = await Assert.ThrowsAsync<EngineException>(() => new CliEngineInfo(cli).GetVersionAsync(TestContext.Current.CancellationToken));
+        var ex = await Assert.ThrowsAsync<EngineException>(() => new CliEngineInfo(cli, session: null).GetVersionAsync(TestContext.Current.CancellationToken));
 
         Assert.Equal("not json", ex.Detail);
     }

@@ -199,7 +199,11 @@ Notes on the design:
     - Events cover container create/start/kill/stop/destroy and network events only. There are no `die` events and no image or volume events.
     - In 3.0.1 the output is text lines; JSON arrives in a later WSL release.
     - Use events to trigger a targeted refresh.
-  - **Polling:** while the window is visible, poll `list` and `images` every 3–5 s, but only if the VM is already up or the user is actively on that page. Health checks use `version`/`info`, which don't wake the VM.
+  - **Polling** (implemented in M1, `ResourceListViewModel`): only the page being shown is polled, and never while the window is minimized.
+    - Every 4 s while containers are running.
+    - When nothing is running, at most every 45 s. Any wslc command resets the VM's 30 s idle timer, so polling faster would keep the VM alive forever. This was verified in M1: 4 s polling kept the VM up; with the 45 s rule it idles out about 32 s after the last container stops.
+    - Never while the VM is down. VM state is detected via the `vmmemwslc-cli-<user>` process, which doesn't wake the VM.
+    - Health checks use `version`/`info`, which don't wake the VM.
   - **Status:** show an "Engine stopped (idle)" state, plus a "Starting engine…" state during the cold start.
   - **Stats:** take 1–2 s per call. Run one non-overlapping `stats --format json` loop for all containers, only while a stats view is visible.
   - **Listing:** fill grids from `list -a --no-trunc --format json` (JSON Lines). Get exact data (ports, RFC 3339 times) from one batched `inspect id1 id2 …`.
@@ -297,7 +301,7 @@ S1 and S2 can run in parallel. S3 starts once S2's skeleton exists.
 | M | Content | Depends on |
 |---|---|---|
 | M0 ✅ | Repo setup: `global.json`, solution, Directory.Build.props, AOT publish script, CI build (GitHub Actions on windows-latest with `PublishAot`) | – |
-| M1 | `WslcGui.Engine.Cli` with fixtures and tests; health check; Containers and Images pages (read-only), then lifecycle actions | S1, S2 |
+| M1 ✅ | `WslcGui.Engine.Cli` with fixtures and tests; health check; Containers and Images pages (read-only), then lifecycle actions | S1, S2 |
 | M2 | Run dialog, Pull dialog with progress, events-driven refresh, toasts and error handling | M1 |
 | M3 | Container detail: Logs, Inspect, Exec one-shot, external terminal (T0). **MVP release.** | M2 |
 | M4 | Embedded terminal (T1) | S3, M3 |
