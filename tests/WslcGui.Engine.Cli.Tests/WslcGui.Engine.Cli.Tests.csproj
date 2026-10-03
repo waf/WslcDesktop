@@ -1,5 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\WslcGui.Engine.Cli\WslcGui.Engine.Cli.csproj" />
-  </ItemGroup>
-</Project>

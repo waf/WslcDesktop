@@ -1,7 +1,7 @@
 #requires -Version 7
 <#
 .SYNOPSIS
-    Publishes WslcGui as a NativeAOT executable.
+    Publishes WSLC Desktop as a NativeAOT executable.
 .EXAMPLE
     ./build/publish.ps1                 # win-x64 → artifacts/publish/win-x64
     ./build/publish.ps1 -Runtime win-arm64
@@ -22,8 +22,8 @@ if ((Test-Path $installer) -and -not ($env:PATH -split ';' -contains $installer)
 }
 
 $output = Join-Path $root "artifacts/publish/$Runtime"
-dotnet publish (Join-Path $root 'src/WslcGui.App/WslcGui.App.csproj') -c $Configuration -r $Runtime -o $output
+dotnet publish (Join-Path $root 'src/WslcDesktop.App/WslcDesktop.App.csproj') -c $Configuration -r $Runtime -o $output
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-$exe = Join-Path $output 'WslcGui.exe'
+$exe = Join-Path $output 'WslcDesktop.exe'
 '{0} ({1:N1} MB)' -f $exe, ((Get-Item $exe).Length / 1MB)

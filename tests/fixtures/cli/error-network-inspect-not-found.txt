@@ -1,6 +1,6 @@
-# argv: wslc network inspect wslcgui-s1-nonet
+# argv: wslc network inspect WslcDesktop-s1-nonet
 # exit: 1
 # --- stdout (4 bytes)
 []
 # --- stderr (39 bytes)
-Network not found: 'wslcgui-s1-nonet'
+Network not found: 'WslcDesktop-s1-nonet'

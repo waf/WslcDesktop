@@ -17,11 +17,11 @@
   </PropertyGroup>
 
   <!--
-    Process isolation: only WslcGui.Engine.Cli may start processes or pseudo-consoles.
+    Process isolation: only WslcDesktop.Engine.Cli may start processes or pseudo-consoles.
     Everything else gets the banned-API analyzer with BannedSymbols.txt.
   -->
   <PropertyGroup>
-    <AllowProcessApis Condition="'$(MSBuildProjectName)' == 'WslcGui.Engine.Cli'">true</AllowProcessApis>
+    <AllowProcessApis Condition="'$(MSBuildProjectName)' == 'WslcDesktop.Engine.Cli'">true</AllowProcessApis>
   </PropertyGroup>
   <ItemGroup Condition="'$(AllowProcessApis)' != 'true'">
     <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" PrivateAssets="all" />

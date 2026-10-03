@@ -21,7 +21,7 @@
       "Healthcheck": null,
       "Image": "postgres:16-alpine",
       "Labels": {
-        "com.wslcgui.spike": "s1"
+        "com.WslcDesktop.spike": "s1"
       },
       "StopTimeout": null,
       "User": "",
@@ -31,27 +31,27 @@
     "HostConfig": {
       "Memory": 0,
       "NanoCpus": 0,
-      "NetworkMode": "wslcgui-s1-net",
+      "NetworkMode": "WslcDesktop-s1-net",
       "Ulimits": []
     },
     "Id": "1246fd7091bb6763493e014b5143cd163341ec3f034900cd2f5e84cda2e7484c",
     "Image": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
     "Labels": {
-      "com.wslcgui.spike": "s1"
+      "com.WslcDesktop.spike": "s1"
     },
     "Mounts": [
       {
         "Destination": "/var/lib/postgresql/data",
-        "Name": "wslcgui-s1-vol",
+        "Name": "WslcDesktop-s1-vol",
         "ReadWrite": true,
-        "Source": "wslcgui-s1-vol",
+        "Source": "WslcDesktop-s1-vol",
         "Type": "volume"
       }
     ],
-    "Name": "/wslcgui-s1-pg",
+    "Name": "/WslcDesktop-s1-pg",
     "NetworkSettings": {
       "Networks": {
-        "wslcgui-s1-net": {
+        "WslcDesktop-s1-net": {
           "Aliases": [
             "1246fd7091bb"
           ],

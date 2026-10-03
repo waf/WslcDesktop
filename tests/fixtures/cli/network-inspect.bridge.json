@@ -11,21 +11,21 @@
         "IPv4Address": "172.17.0.4/16",
         "IPv6Address": "",
         "MacAddress": "02:42:ac:11:00:04",
-        "Name": "wslcgui-s1-deb"
+        "Name": "WslcDesktop-s1-deb"
       },
       "a95d3792f98c135a179b2e7766166184020b15924acd3539f22324c3c6a3e0ea": {
         "EndpointID": "3be6699a90240c9080742f41145718271606d6a054a7f72d34e4f7cca120d097",
         "IPv4Address": "172.17.0.3/16",
         "IPv6Address": "",
         "MacAddress": "02:42:ac:11:00:03",
-        "Name": "wslcgui-s1-logger"
+        "Name": "WslcDesktop-s1-logger"
       },
       "c3961e97de0ecb13441a0c66df4cdf16a9ab9114fd9a850598b2d2b2d64c5851": {
         "EndpointID": "bb9aee3953d0abe053480a066290435768b4e589e55a1d4c79c58b664d1ef4d9",
         "IPv4Address": "172.17.0.2/16",
         "IPv6Address": "",
         "MacAddress": "02:42:ac:11:00:02",
-        "Name": "wslcgui-s1-redis"
+        "Name": "WslcDesktop-s1-redis"
       }
     },
     "Created": "2026-10-03T03:37:32.993374191Z",

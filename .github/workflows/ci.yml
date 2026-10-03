@@ -16,7 +16,7 @@ jobs:
           global-json-file: global.json
 
       - name: Test
-        run: dotnet test --solution WslcGui.slnx -c Release
+        run: dotnet test --solution WslcDesktop.slnx -c Release
 
       - name: Publish (NativeAOT, win-x64)
         shell: pwsh
@@ -24,5 +24,5 @@ jobs:
 
       - uses: actions/upload-artifact@v5
         with:
-          name: WslcGui-win-x64
-          path: artifacts/publish/win-x64/WslcGui.exe
+          name: WslcDesktop-win-x64
+          path: artifacts/publish/win-x64/WslcDesktop.exe

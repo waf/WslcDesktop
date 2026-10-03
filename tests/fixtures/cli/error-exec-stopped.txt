@@ -1,4 +1,4 @@
-# argv: wslc exec wslcgui-s1-exited echo hi
+# argv: wslc exec WslcDesktop-s1-exited echo hi
 # exit: 1
 # --- stdout (0 bytes)
 # --- stderr (279 bytes)

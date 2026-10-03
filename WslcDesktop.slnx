@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WslcDesktop.App/WslcDesktop.App.csproj" />
+    <Project Path="src/WslcDesktop.Core/WslcDesktop.Core.csproj" />
+    <Project Path="src/WslcDesktop.Engine.Abstractions/WslcDesktop.Engine.Abstractions.csproj" />
+    <Project Path="src/WslcDesktop.Engine.Cli/WslcDesktop.Engine.Cli.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WslcDesktop.Core.Tests/WslcDesktop.Core.Tests.csproj" />
+    <Project Path="tests/WslcDesktop.Engine.Cli.Tests/WslcDesktop.Engine.Cli.Tests.csproj" />
+  </Folder>
+</Solution>

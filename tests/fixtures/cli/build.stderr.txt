@@ -5,4 +5,4 @@
 exporting to image
   | exporting layers
   | writing image sha256:151ffaade0e222b2219e83a88407a2ad6b946b230cd2719142428b0120bf92fe
-  | naming to docker.io/library/wslcgui-s1-build:latest
+  | naming to docker.io/library/WslcDesktop-s1-build:latest

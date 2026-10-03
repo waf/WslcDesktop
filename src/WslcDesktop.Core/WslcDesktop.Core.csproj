@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    UI-agnostic view models and services. Depends on engine abstractions only, never on an engine
+    implementation or on MewUI, so it can be unit tested headless.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\WslcDesktop.Engine.Abstractions\WslcDesktop.Engine.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WslcDesktop.Core.Tests" />
+  </ItemGroup>
+</Project>

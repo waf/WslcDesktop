@@ -1,7 +1,7 @@
-# argv: wslc --session wslcgui-s1-nosession list
+# argv: wslc --session WslcDesktop-s1-nosession list
 # exit: 1
 # --- stdout (0 bytes)
 # --- stderr (224 bytes)
-Session not found: 'wslcgui-s1-nosession'
+Session not found: 'WslcDesktop-s1-nosession'
 Error code: WSLC_E_SESSION_NOT_FOUND
 If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.

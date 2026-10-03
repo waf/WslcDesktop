@@ -1,4 +1,4 @@
-# argv: wslc exec wslcgui-s1-deb sh -c echo to-out; echo to-err >&2; exit 7
+# argv: wslc exec WslcDesktop-s1-deb sh -c echo to-out; echo to-err >&2; exit 7
 # exit: 7
 # --- stdout (7 bytes)
 to-out

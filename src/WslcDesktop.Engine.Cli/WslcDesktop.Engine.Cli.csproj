@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The only project allowed to start processes (see Directory.Build.props / BannedSymbols.txt). -->
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WslcDesktop.Engine.Abstractions\WslcDesktop.Engine.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WslcDesktop.Engine.Cli.Tests" />
+  </ItemGroup>
+</Project>

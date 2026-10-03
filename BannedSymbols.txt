@@ -1,2 +1,2 @@
-T:System.Diagnostics.Process;Start processes only via WslcGui.Engine.Cli (see PLAN.md §2.1)
-T:System.Diagnostics.ProcessStartInfo;Start processes only via WslcGui.Engine.Cli (see PLAN.md §2.1)
+T:System.Diagnostics.Process;Start processes only via WslcDesktop.Engine.Cli (see PLAN.md §2.1)
+T:System.Diagnostics.ProcessStartInfo;Start processes only via WslcDesktop.Engine.Cli (see PLAN.md §2.1)

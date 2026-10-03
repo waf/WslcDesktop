@@ -1,6 +1,6 @@
-# argv: wslc inspect --type volume wslcgui-s1-pg
+# argv: wslc inspect --type volume WslcDesktop-s1-pg
 # exit: 1
 # --- stdout (4 bytes)
 []
 # --- stderr (33 bytes)
-Object not found: wslcgui-s1-pg
+Object not found: WslcDesktop-s1-pg

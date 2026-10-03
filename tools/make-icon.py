@@ -1,4 +1,4 @@
-"""Draws the app icon (a cube on a rounded blue tile) into src/WslcGui.App/Assets/app.ico. Needs Pillow."""
+"""Draws the app icon (a cube on a rounded blue tile) into src/WslcDesktop.App/Assets/app.ico. Needs Pillow."""
 from PIL import Image, ImageDraw
 
 def draw(size):
@@ -18,5 +18,5 @@ def draw(size):
 
 sizes = [16, 20, 24, 32, 40, 48, 64, 128, 256]
 images = [draw(n) for n in sizes]
-images[-1].save("src/WslcGui.App/Assets/app.ico", sizes=[(n, n) for n in sizes], append_images=images[:-1])
+images[-1].save("src/WslcDesktop.App/Assets/app.ico", sizes=[(n, n) for n in sizes], append_images=images[:-1])
 print("wrote app.ico")

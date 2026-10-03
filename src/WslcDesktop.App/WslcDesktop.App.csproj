@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>WslcDesktop</AssemblyName>
+    <PublishAot>true</PublishAot>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <ApplicationIcon>Assets/app.ico</ApplicationIcon>
+    <!-- The tray icon's Win32 struct has fixed-size buffers. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets/app.ico" LogicalName="WslcDesktop.app.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aprillz.MewUI.Core" />
+    <PackageReference Include="Aprillz.MewUI.Platform.Win32" />
+    <PackageReference Include="Aprillz.MewUI.Backend.Direct2D" />
+    <PackageReference Include="Aprillz.MewUI.MewCharts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WslcDesktop.Core\WslcDesktop.Core.csproj" />
+    <!-- Referenced only from the composition root (Program.cs). -->
+    <ProjectReference Include="..\WslcDesktop.Engine.Cli\WslcDesktop.Engine.Cli.csproj" />
+  </ItemGroup>
+</Project>
