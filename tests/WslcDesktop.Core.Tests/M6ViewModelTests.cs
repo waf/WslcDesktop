@@ -124,8 +124,6 @@ public class BuildAndCommandOutputTests
         vm.Output.LineAdded += lines.Add;
 
         Assert.True(await vm.BuildAsync());
-
-        await WaitUntil(() => lines.Count == 2);
         Assert.Equal(["#1 load", "#2 DONE"], lines);
         Assert.Equal(["build C:\\app tag=app:dev"], _engine.Calls);
         Assert.Equal("Built app:dev.", vm.Output.Status);
@@ -173,14 +171,6 @@ public class BuildAndCommandOutputTests
 
         Assert.False(await run);
         Assert.Equal("Cancelled.", output.Status);
-    }
-
-    private static async Task WaitUntil(Func<bool> condition)
-    {
-        for (var i = 0; i < 200 && !condition(); i++)
-        {
-            await Task.Delay(5, TestContext.Current.CancellationToken);
-        }
     }
 }
 

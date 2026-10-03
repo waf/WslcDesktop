@@ -36,7 +36,7 @@ public sealed class PullImageViewModel(IImageService images) : ObservableObject,
         Status = $"Pulling {reference}…";
         try
         {
-            var progress = new Progress<PullProgress>(p =>
+            var progress = new OrderedProgress<PullProgress>(p =>
                 Status = p.LayerId is null ? p.Status : $"{p.LayerId}: {p.Status}");
             await images.PullAsync(reference, progress, _cancellation.Token);
             Status = $"Pulled {reference}.";

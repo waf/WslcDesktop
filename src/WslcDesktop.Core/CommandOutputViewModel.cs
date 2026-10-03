@@ -38,7 +38,7 @@ public sealed class CommandOutputViewModel : ObservableObject, IDisposable
         Status = busyText;
         try
         {
-            await operation(new Progress<string>(AddLine), _cancellation.Token);
+            await operation(new OrderedProgress<string>(AddLine), _cancellation.Token);
             Status = doneText;
             Succeeded = true;
         }
