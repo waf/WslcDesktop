@@ -1,4 +1,4 @@
-##### wslc exec WslcDesktop-s1-logger stat -c '%F|%s|%Y|%A|%N' /etc/*   (glob expanded by sh -c inside container)
+##### wslc exec wslcgui-s1-logger stat -c '%F|%s|%Y|%A|%N' /etc/*   (glob expanded by sh -c inside container)
 # exit: 0
 # --- stdout
 regular file|7|1789666254|-rw-r--r--|/etc/alpine-release
@@ -38,12 +38,12 @@ regular file|53|1774381254|-rw-r--r--|/etc/sysctl.conf
 directory|4096|1789666321|drwxr-xr-x|/etc/sysctl.d
 directory|4096|1789666321|drwxr-xr-x|/etc/udhcpc
 # --- stderr
-##### literal argv (no shell): wslc exec WslcDesktop-s1-logger stat -c '%F|%s|%Y|%A|%N' /etc/*  [glob passed literally]
+##### literal argv (no shell): wslc exec wslcgui-s1-logger stat -c '%F|%s|%Y|%A|%N' /etc/*  [glob passed literally]
 # exit: 1
 # --- stdout
 # --- stderr
 stat: can't stat '/etc/*': No such file or directory
-##### wslc exec WslcDesktop-s1-deb stat -c '%F|%s|%Y|%A|%N' /etc/*   (glob expanded by sh -c inside container)
+##### wslc exec wslcgui-s1-deb stat -c '%F|%s|%Y|%A|%N' /etc/*   (glob expanded by sh -c inside container)
 # exit: 0
 # --- stdout
 regular file|3040|1685030075|-rw-r--r--|'/etc/adduser.conf'
@@ -114,7 +114,7 @@ regular file|8|1789689600|-rw-r--r--|'/etc/timezone'
 directory|4096|1789689600|drwxr-xr-x|'/etc/update-motd.d'
 regular file|681|1673994878|-rw-r--r--|'/etc/xattr.conf'
 # --- stderr
-##### literal argv (no shell): wslc exec WslcDesktop-s1-deb stat -c '%F|%s|%Y|%A|%N' /etc/*  [glob passed literally]
+##### literal argv (no shell): wslc exec wslcgui-s1-deb stat -c '%F|%s|%Y|%A|%N' /etc/*  [glob passed literally]
 # exit: 1
 # --- stdout
 # --- stderr

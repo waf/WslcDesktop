@@ -34,6 +34,6 @@ public class CliErrorsTests
     {
         var ex = CliErrors.FromResult(Fixtures.ReadResult("error-container-start-not-found.txt"));
 
-        Assert.Equal("Container 'WslcDesktop-s1-doesnotexist' not found.", ex.Message);
+        Assert.Equal("Container 'wslcgui-s1-doesnotexist' not found.", ex.Message);
     }
 }

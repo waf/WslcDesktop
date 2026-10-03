@@ -1,6 +1,6 @@
-# argv: wslc container inspect WslcDesktop-s1-doesnotexist
+# argv: wslc container inspect wslcgui-s1-doesnotexist
 # exit: 1
 # --- stdout (4 bytes)
 []
 # --- stderr (48 bytes)
-Container 'WslcDesktop-s1-doesnotexist' not found.
+Container 'wslcgui-s1-doesnotexist' not found.

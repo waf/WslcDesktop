@@ -28,7 +28,7 @@
     "Image": "sha256:320994c3b997e2ec6433f717f153e108023c5bec8fefa8d76b83451d16d05ea8",
     "Labels": {},
     "Mounts": [],
-    "Name": "/WslcDesktop-s1-exited",
+    "Name": "/wslcgui-s1-exited",
     "NetworkSettings": {
       "Networks": {
         "bridge": {

@@ -1,7 +1,7 @@
-# argv: wslc run -d --name WslcDesktop-s1-deb alpine:latest true
+# argv: wslc run -d --name wslcgui-s1-deb alpine:latest true
 # exit: 1
 # --- stdout (0 bytes)
 # --- stderr (401 bytes)
-Conflict. The container name "/WslcDesktop-s1-deb" is already in use by container "5fa2944e80e52226a046abe345a5c8c9fae1f416f30fedc2423034d35f12bd39". You have to remove (or rename) that container to be able to reuse that name.
+Conflict. The container name "/wslcgui-s1-deb" is already in use by container "5fa2944e80e52226a046abe345a5c8c9fae1f416f30fedc2423034d35f12bd39". You have to remove (or rename) that container to be able to reuse that name.
 Error code: ERROR_ALREADY_EXISTS
 If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.

@@ -131,7 +131,7 @@ public class CliStatsTests
 
         var stats = await new CliStatsSource(cli).SnapshotAsync([], TestContext.Current.CancellationToken);
 
-        var redis = Assert.Single(stats, s => s.Name == "WslcDesktop-s1-redis");
+        var redis = Assert.Single(stats, s => s.Name == "wslcgui-s1-redis");
         Assert.Equal(0.31, redis.CpuPercent, precision: 2);
         Assert.Equal((long)Math.Round(14.16 * (1 << 20)), redis.MemoryUsageBytes);
         Assert.Equal((long)Math.Round(15.31 * (1L << 30)), redis.MemoryLimitBytes);

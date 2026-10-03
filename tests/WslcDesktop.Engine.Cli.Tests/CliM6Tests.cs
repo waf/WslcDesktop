@@ -11,7 +11,7 @@ public class CliVolumesAndNetworksTests
 
         var volumes = await new CliVolumeService(cli).ListAsync(Ct);
 
-        var named = Assert.Single(volumes, v => v.Name == "WslcDesktop-s1-vol");
+        var named = Assert.Single(volumes, v => v.Name == "wslcgui-s1-vol");
         Assert.Equal(("guest", false), (named.Driver, named.IsAnonymous));
         Assert.Contains(volumes, v => v.IsAnonymous);
     }
@@ -26,7 +26,7 @@ public class CliVolumesAndNetworksTests
         var bridge = Assert.Single(networks, n => n.Name == "bridge");
         Assert.True(bridge.IsBuiltIn);
         Assert.Equal(new DateTimeOffset(2026, 10, 3, 3, 37, 32, TimeSpan.Zero).AddTicks(9933741), bridge.CreatedAt);
-        Assert.False(Assert.Single(networks, n => n.Name == "WslcDesktop-s1-net").IsBuiltIn);
+        Assert.False(Assert.Single(networks, n => n.Name == "wslcgui-s1-net").IsBuiltIn);
     }
 
     [Fact]

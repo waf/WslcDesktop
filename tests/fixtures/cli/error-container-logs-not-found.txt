@@ -1,7 +1,7 @@
-# argv: wslc logs WslcDesktop-s1-doesnotexist
+# argv: wslc logs wslcgui-s1-doesnotexist
 # exit: 1
 # --- stdout (0 bytes)
 # --- stderr (231 bytes)
-Container 'WslcDesktop-s1-doesnotexist' not found.
+Container 'wslcgui-s1-doesnotexist' not found.
 Error code: WSLC_E_CONTAINER_NOT_FOUND
 If this error was unexpected, please consider searching for existing issues or filing a new issue at https://github.com/microsoft/WSL/issues.

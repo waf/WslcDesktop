@@ -1,4 +1,4 @@
 {"CreatedAt":"2026-10-03 03:37:32.993374191 +0000 UTC","Driver":"bridge","ID":"776f04df0ed2","IPv4":"true","IPv6":"false","Internal":"false","Labels":"","Name":"bridge","Scope":"local"}
 {"CreatedAt":"2026-09-30 09:00:01.280484099 +0000 UTC","Driver":"host","ID":"b10707552f62","IPv4":"true","IPv6":"false","Internal":"false","Labels":"","Name":"host","Scope":"local"}
 {"CreatedAt":"2026-09-30 09:00:01.072319394 +0000 UTC","Driver":"null","ID":"edc6f9548710","IPv4":"true","IPv6":"false","Internal":"false","Labels":"","Name":"none","Scope":"local"}
-{"CreatedAt":"2026-10-03 03:37:33.091590595 +0000 UTC","Driver":"bridge","ID":"2ffa42b4d503","IPv4":"true","IPv6":"false","Internal":"false","Labels":"","Name":"WslcDesktop-s1-net","Scope":"local"}
+{"CreatedAt":"2026-10-03 03:37:33.091590595 +0000 UTC","Driver":"bridge","ID":"2ffa42b4d503","IPv4":"true","IPv6":"false","Internal":"false","Labels":"","Name":"wslcgui-s1-net","Scope":"local"}

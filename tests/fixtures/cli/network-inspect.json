@@ -11,7 +11,7 @@
         "IPv4Address": "172.18.0.2/16",
         "IPv6Address": "",
         "MacAddress": "02:42:ac:12:00:02",
-        "Name": "WslcDesktop-s1-pg"
+        "Name": "wslcgui-s1-pg"
       }
     },
     "Created": "2026-10-03T03:37:33.091590595Z",
@@ -32,7 +32,7 @@
     "Ingress": false,
     "Internal": false,
     "Labels": {},
-    "Name": "WslcDesktop-s1-net",
+    "Name": "wslcgui-s1-net",
     "Options": {},
     "Scope": "local",
     "Status": {}

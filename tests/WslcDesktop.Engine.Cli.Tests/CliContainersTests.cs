@@ -14,7 +14,7 @@ public class CliContainersTests
         Assert.NotEmpty(containers);
         Assert.All(containers, c => Assert.Equal(64, c.Id.Length));
 
-        var exited = Assert.Single(containers, c => c.Name == "WslcDesktop-s1-exited");
+        var exited = Assert.Single(containers, c => c.Name == "wslcgui-s1-exited");
         Assert.Equal(ContainerState.Exited, exited.State);
         Assert.Equal("alpine:latest", exited.Image);
         Assert.Equal("sh -c 'echo hello-from-exited; echo bye >&2; exit 3'", exited.Command);

@@ -1,2 +1,2 @@
-{"BlockIO":"46.8MB / 47.4MB","CPUPerc":"0.03%","ID":"1246fd7091bb6763493e014b5143cd163341ec3f034900cd2f5e84cda2e7484c","MemPerc":"0.69%","MemUsage":"107.7MiB / 15.31GiB","Name":"WslcDesktop-s1-pg","NetIO":"1.25kB / 0B","PIDs":6}
-{"BlockIO":"10.6MB / 0B","CPUPerc":"0.33%","ID":"c3961e97de0ecb13441a0c66df4cdf16a9ab9114fd9a850598b2d2b2d64c5851","MemPerc":"0.09%","MemUsage":"14.16MiB / 15.31GiB","Name":"WslcDesktop-s1-redis","NetIO":"1.25kB / 0B","PIDs":6}
+{"BlockIO":"46.8MB / 47.4MB","CPUPerc":"0.03%","ID":"1246fd7091bb6763493e014b5143cd163341ec3f034900cd2f5e84cda2e7484c","MemPerc":"0.69%","MemUsage":"107.7MiB / 15.31GiB","Name":"wslcgui-s1-pg","NetIO":"1.25kB / 0B","PIDs":6}
+{"BlockIO":"10.6MB / 0B","CPUPerc":"0.33%","ID":"c3961e97de0ecb13441a0c66df4cdf16a9ab9114fd9a850598b2d2b2d64c5851","MemPerc":"0.09%","MemUsage":"14.16MiB / 15.31GiB","Name":"wslcgui-s1-redis","NetIO":"1.25kB / 0B","PIDs":6}

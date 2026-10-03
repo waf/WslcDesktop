@@ -1,4 +1,4 @@
-# argv: wslc rm WslcDesktop-s1-deb
+# argv: wslc rm wslcgui-s1-deb
 # exit: 1
 # --- stdout (0 bytes)
 # --- stderr (365 bytes)

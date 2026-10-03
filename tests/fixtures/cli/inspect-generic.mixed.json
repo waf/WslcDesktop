@@ -21,7 +21,7 @@
       "Healthcheck": null,
       "Image": "postgres:16-alpine",
       "Labels": {
-        "com.WslcDesktop.spike": "s1"
+        "com.wslcgui.spike": "s1"
       },
       "StopTimeout": null,
       "User": "",
@@ -31,27 +31,27 @@
     "HostConfig": {
       "Memory": 0,
       "NanoCpus": 0,
-      "NetworkMode": "WslcDesktop-s1-net",
+      "NetworkMode": "wslcgui-s1-net",
       "Ulimits": []
     },
     "Id": "1246fd7091bb6763493e014b5143cd163341ec3f034900cd2f5e84cda2e7484c",
     "Image": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
     "Labels": {
-      "com.WslcDesktop.spike": "s1"
+      "com.wslcgui.spike": "s1"
     },
     "Mounts": [
       {
         "Destination": "/var/lib/postgresql/data",
-        "Name": "WslcDesktop-s1-vol",
+        "Name": "wslcgui-s1-vol",
         "ReadWrite": true,
-        "Source": "WslcDesktop-s1-vol",
+        "Source": "wslcgui-s1-vol",
         "Type": "volume"
       }
     ],
-    "Name": "/WslcDesktop-s1-pg",
+    "Name": "/wslcgui-s1-pg",
     "NetworkSettings": {
       "Networks": {
-        "WslcDesktop-s1-net": {
+        "wslcgui-s1-net": {
           "Aliases": [
             "1246fd7091bb"
           ],
@@ -86,8 +86,8 @@
     "CreatedAt": "2026-10-03T03:37:33Z",
     "Driver": "guest",
     "Labels": null,
-    "Mountpoint": "/var/lib/docker/volumes/WslcDesktop-s1-vol/_data",
-    "Name": "WslcDesktop-s1-vol",
+    "Mountpoint": "/var/lib/docker/volumes/wslcgui-s1-vol/_data",
+    "Name": "wslcgui-s1-vol",
     "Options": null,
     "Scope": "local"
   },
@@ -103,7 +103,7 @@
         "IPv4Address": "172.18.0.2/16",
         "IPv6Address": "",
         "MacAddress": "02:42:ac:12:00:02",
-        "Name": "WslcDesktop-s1-pg"
+        "Name": "wslcgui-s1-pg"
       }
     },
     "Created": "2026-10-03T03:37:33.091590595Z",
@@ -124,7 +124,7 @@
     "Ingress": false,
     "Internal": false,
     "Labels": {},
-    "Name": "WslcDesktop-s1-net",
+    "Name": "wslcgui-s1-net",
     "Options": {},
     "Scope": "local",
     "Status": {}

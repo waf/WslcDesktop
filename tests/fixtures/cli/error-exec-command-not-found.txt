@@ -1,4 +1,4 @@
-# argv: wslc exec WslcDesktop-s1-deb /no/such/binary
+# argv: wslc exec wslcgui-s1-deb /no/such/binary
 # exit: 126
 # --- stdout (156 bytes)
 OCI runtime exec failed: exec failed: unable to start container process: exec: "/no/such/binary": stat /no/such/binary: no such file or directory: unknown

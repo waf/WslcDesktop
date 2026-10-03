@@ -33,7 +33,7 @@
         "Destination": "/hostdocs",
         "Name": "",
         "ReadWrite": false,
-        "Source": "D:\\Personal\\WslcDesktop\\docs",
+        "Source": "D:\\Personal\\WslcGui\\docs",
         "Type": "bind"
       },
       {
@@ -44,7 +44,7 @@
         "Type": "volume"
       }
     ],
-    "Name": "/WslcDesktop-s1-redis",
+    "Name": "/wslcgui-s1-redis",
     "NetworkSettings": {
       "Networks": {
         "bridge": {

@@ -1,5 +1,5 @@
-WslcDesktop-s1-pg
-WslcDesktop-s1-redis
-WslcDesktop-s1-logger
-WslcDesktop-s1-deb
-WslcDesktop-s1-exited
+wslcgui-s1-pg
+wslcgui-s1-redis
+wslcgui-s1-logger
+wslcgui-s1-deb
+wslcgui-s1-exited

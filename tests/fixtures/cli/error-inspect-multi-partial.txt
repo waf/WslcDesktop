@@ -1,4 +1,4 @@
-# argv: wslc container inspect WslcDesktop-s1-deb WslcDesktop-s1-doesnotexist
+# argv: wslc container inspect wslcgui-s1-deb wslcgui-s1-doesnotexist
 # exit: 1
 # --- stdout (1396 bytes)
 [
@@ -30,7 +30,7 @@
     "Image": "sha256:db9f02c6bde9fa90cc8074c92754b2b046947392f1a857726e77f041febb7b82",
     "Labels": {},
     "Mounts": [],
-    "Name": "/WslcDesktop-s1-deb",
+    "Name": "/wslcgui-s1-deb",
     "NetworkSettings": {
       "Networks": {
         "bridge": {
@@ -57,4 +57,4 @@
   }
 ]
 # --- stderr (48 bytes)
-Container 'WslcDesktop-s1-doesnotexist' not found.
+Container 'wslcgui-s1-doesnotexist' not found.

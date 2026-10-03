@@ -1,6 +1,6 @@
-# argv: wslc inspect WslcDesktop-s1-doesnotexist
+# argv: wslc inspect wslcgui-s1-doesnotexist
 # exit: 1
 # --- stdout (4 bytes)
 []
 # --- stderr (43 bytes)
-Object not found: WslcDesktop-s1-doesnotexist
+Object not found: wslcgui-s1-doesnotexist

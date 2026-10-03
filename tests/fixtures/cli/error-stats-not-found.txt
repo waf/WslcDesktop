@@ -1,4 +1,4 @@
-# argv: wslc stats --format json WslcDesktop-s1-doesnotexist
+# argv: wslc stats --format json wslcgui-s1-doesnotexist
 # exit: 1
 # --- stdout (0 bytes)
 # --- stderr (185 bytes)
