@@ -2,6 +2,7 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Input;
 
+using WslcGui.App.Controls;
 using WslcGui.App.Pages;
 using WslcGui.Core;
 
@@ -77,7 +78,7 @@ internal sealed class TextViewerDialog : Window
         Title = title;
         StartupLocation = WindowStartupLocation.CenterOwner;
         WindowSize = WindowSize.Resizable(760, 640);
-        var view = new MultiLineTextBox().IsReadOnly().Wrap(false).FontFamily("Cascadia Mono").Text(text);
+        var view = JsonClassifier.Attach(new MultiLineTextBox().IsReadOnly().Wrap(false).FontFamily("Cascadia Mono").Text(text));
         PreviewKeyDown += e =>
         {
             if (e.Key == Key.Escape)

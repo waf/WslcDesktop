@@ -3,6 +3,7 @@ using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Input;
 using Aprillz.MewUI.Rendering;
 
+using WslcGui.App.Controls;
 using WslcGui.App.Dialogs;
 using WslcGui.App.Icons;
 using WslcGui.Core;
@@ -150,7 +151,7 @@ internal sealed class ContainerDetailsView : UserControl
 
     private DockPanel BuildInspectTab()
     {
-        var view = MonospaceText();
+        var view = JsonClassifier.Attach(MonospaceText());
         _vm.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(_vm.InspectJson))
