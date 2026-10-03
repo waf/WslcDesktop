@@ -6,6 +6,8 @@ It aims to be fast and resource efficient; it's one self-contained `WslcDesktop.
 of about 10 MB with memory usage around 90 MB. It does not need the .NET runtime;
 it's built with [MewUI](https://github.com/aprillz/MewUI) and published with NativeAOT.
 
+[![WSLC Desktop screenshot](assets/screenshot.png)](assets/screenshot.png)
+
 ## Features
 
 - **Containers:**
