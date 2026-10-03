@@ -48,6 +48,9 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
         Ui = ui;
     }
 
+    /// <summary>Raised after the rows changed (a load or a pending-state update), whether or not the filter shows them.</summary>
+    public event Action? RowsChanged;
+
     /// <summary>The rows shown, after filtering. Mutated only on the UI thread.</summary>
     public ObservableCollection<TRow> Items { get; } = [];
 
@@ -89,6 +92,9 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
 
     /// <summary>All rows before filtering.</summary>
     protected IReadOnlyList<TRow> AllRows => _all;
+
+    /// <summary>Finds a row by key among all rows, including ones the search filter hides.</summary>
+    public TRow? Find(string key) => _all.FirstOrDefault(row => KeyOf(row) == key);
 
     protected IUserInteraction Ui { get; }
 
@@ -145,6 +151,7 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
             OnPropertyChanged(nameof(TotalCount));
             ApplyFilter();
             OnLoaded();
+            RowsChanged?.Invoke();
         }
         catch (EngineException ex)
         {
@@ -175,6 +182,7 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
     {
         _all = _all.Select(row => keys.Contains(KeyOf(row)) ? update(row) : row).ToList();
         ApplyFilter();
+        RowsChanged?.Invoke();
     }
 
     /// <summary>

@@ -16,11 +16,16 @@ internal sealed class MainWindow : Window
     private readonly NavigationView _navigation;
     private IRefreshablePage? _currentPage;
 
-    public MainWindow(EngineStatusViewModel engineStatus, ContainersViewModel containers, ImagesViewModel images, DialogService dialogs)
+    public MainWindow(
+        EngineStatusViewModel engineStatus,
+        ContainersViewModel containers,
+        ImagesViewModel images,
+        DialogService dialogs,
+        Func<ContainerRow, ContainerDetailsViewModel> createContainerDetails)
     {
         this.Title("WSLC Desktop").Resizable(1200, 760);
 
-        _navigation = BuildNavigation(new ContainersPage(containers, dialogs), new ImagesPage(images, dialogs));
+        _navigation = BuildNavigation(new ContainersPage(containers, dialogs, createContainerDetails), new ImagesPage(images, dialogs));
         var navigation = _navigation;
         Content = new DockPanel().Children(
             BuildStatusBar(engineStatus).DockBottom(),

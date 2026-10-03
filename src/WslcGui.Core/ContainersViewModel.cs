@@ -82,6 +82,14 @@ public sealed class ContainersViewModel(
         }
     }
 
+    /// <summary>
+    /// Whether the container is known to be gone. Only answerable when stopped containers are listed; otherwise a
+    /// stopped container is simply not in the list.
+    /// </summary>
+    public bool IsKnownRemoved(string containerId) => _showAll && AllRows.All(row => row.Id != containerId);
+
+    public void ReportError(string title, Exception exception) => Ui.ShowError(title, exception);
+
     public Task StartAsync(IReadOnlyList<ContainerRow> rows) =>
         RunAsync(rows.Where(r => !r.IsRunning).ToList(), "Starting…", "start", r => lifecycle.StartAsync(r.Id));
 

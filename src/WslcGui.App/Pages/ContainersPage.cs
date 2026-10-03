@@ -17,14 +17,46 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
 
     private readonly ContainersViewModel _vm;
     private readonly DialogService _dialogs;
+    private readonly Func<ContainerRow, ContainerDetailsViewModel> _createDetails;
     private readonly GridView _grid;
+    private readonly Border _host = new();
+    private FrameworkElement? _listView;
+    private ContainerDetailsViewModel? _details;
 
-    public ContainersPage(ContainersViewModel vm, DialogService dialogs)
+    public ContainersPage(ContainersViewModel vm, DialogService dialogs, Func<ContainerRow, ContainerDetailsViewModel> createDetails)
     {
         _vm = vm;
         _dialogs = dialogs;
+        _createDetails = createDetails;
         _grid = BuildGrid();
+        _grid.ItemDoubleClicked += item =>
+        {
+            if (item is ContainerRow row)
+            {
+                ShowDetails(row);
+            }
+        };
         Build();
+    }
+
+    /// <summary>Shows one container's details in place of the list.</summary>
+    public void ShowDetails(ContainerRow row)
+    {
+        CloseDetails();
+        _details = _createDetails(row);
+        _host.Child = new ContainerDetailsView(_details, ShowList);
+    }
+
+    private void ShowList()
+    {
+        CloseDetails();
+        _host.Child = _listView;
+    }
+
+    private void CloseDetails()
+    {
+        _details?.Dispose();
+        _details = null;
     }
 
     public Task RefreshAsync(RefreshReason reason) => _vm.RefreshAsync(reason);
@@ -37,6 +69,7 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
         var restart = new Command("containers.restart", "Restart");
         var kill = new Command("containers.kill", "Kill");
         var remove = new Command("containers.remove", "Remove");
+        var details = new Command("containers.details", "Details");
         var copyId = new Command("containers.copyId", "Copy ID");
         var copyName = new Command("containers.copyName", "Copy name");
         Commands.Register(start, (ContainerRow row) => _ = _vm.StartAsync(PageParts.Targets(_grid, row)), (ContainerRow row) => !row.IsRunning);
@@ -44,10 +77,13 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
         Commands.Register(restart, (ContainerRow row) => _ = _vm.RestartAsync(PageParts.Targets(_grid, row)));
         Commands.Register(kill, (ContainerRow row) => _ = _vm.KillAsync(PageParts.Targets(_grid, row)), (ContainerRow row) => row.IsRunning);
         Commands.Register(remove, (ContainerRow row) => _ = _vm.RemoveAsync(PageParts.Targets(_grid, row)));
+        Commands.Register(details, (ContainerRow row) => ShowDetails(row));
         Commands.Register(copyId, (ContainerRow row) => PageParts.CopyToClipboard(row.Id));
         Commands.Register(copyName, (ContainerRow row) => PageParts.CopyToClipboard(row.Name));
 
         var rowMenu = new ContextMenu()
+            .Item(details)
+            .Separator()
             .Item(start)
             .Item(stop)
             .Item(restart)
@@ -83,7 +119,7 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
         var showAll = new CheckBox().Content("Show stopped").IsChecked(_vm.ShowAll).CenterVertical().Margin(8, 0)
             .OnCheckedChanged(isChecked => _vm.ShowAll = isChecked);
 
-        return new Grid()
+        _listView = new Grid()
             .Rows("Auto, Auto, Auto, *")
             .Children(
                 PageParts.Header("Containers", runButton, startButton, stopButton, restartButton, removeButton),
@@ -95,6 +131,9 @@ internal sealed class ContainersPage : UserControl, IRefreshablePage
                 PageParts.StatusLine(_vm).Row(2),
                 _grid.Row(3).Margin(16, 0, 16, 16),
                 PageParts.EmptyHint(_vm, "No containers yet. Use Run… to start one.").Row(3));
+
+        _host.Child = _listView;
+        return _host;
     }
 
     private List<ContainerRow> Selected() => PageParts.Targets<ContainerRow>(_grid).ToList();

@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Channels;
 
 namespace WslcGui.Engine.Cli;
 
@@ -84,6 +85,71 @@ internal sealed class WslcCli : ICliRunner, IDisposable
         {
             // Reached on early exit from the consumer's loop as well as on completion.
             KillQuietly(process);
+        }
+    }
+
+    public async IAsyncEnumerable<CliOutputLine> StreamOutputAsync(IReadOnlyList<string> arguments, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        using var process = Start(arguments);
+        using var registration = KillOnCancel(process, cancellationToken);
+
+        // Both pipes are read concurrently into one channel so lines come out in arrival order.
+        var channel = Channel.CreateUnbounded<CliOutputLine>(new UnboundedChannelOptions { SingleReader = true });
+        var stdout = PumpAsync(process.StandardOutput, CliOutputKind.StdOut, channel.Writer);
+        var stderr = PumpAsync(process.StandardError, CliOutputKind.StdErr, channel.Writer);
+        _ = Task.WhenAll(stdout, stderr).ContinueWith(_ => channel.Writer.TryComplete(), TaskScheduler.Default);
+
+        try
+        {
+            await foreach (var line in channel.Reader.ReadAllAsync(CancellationToken.None).ConfigureAwait(false))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                yield return line;
+            }
+
+            await process.WaitForExitAsync(CancellationToken.None).ConfigureAwait(false);
+            cancellationToken.ThrowIfCancellationRequested();
+            CommandCompleted?.Invoke(new CliResult(arguments, process.ExitCode, string.Empty, string.Empty, stopwatch.Elapsed));
+            yield return new CliOutputLine(CliOutputKind.Exit, string.Empty, process.ExitCode);
+        }
+        finally
+        {
+            KillQuietly(process);
+        }
+
+        static async Task PumpAsync(StreamReader reader, CliOutputKind kind, ChannelWriter<CliOutputLine> writer)
+        {
+            while (await reader.ReadLineAsync(CancellationToken.None).ConfigureAwait(false) is { } line)
+            {
+                await writer.WriteAsync(new CliOutputLine(kind, line), CancellationToken.None).ConfigureAwait(false);
+            }
+        }
+    }
+
+    public string? ExecutablePath => _executable.Value;
+
+    public IReadOnlyList<string> GlobalArguments => _options.Session is { } session ? ["--session", session] : [];
+
+    public void LaunchDetached(string executable, IReadOnlyList<string> arguments)
+    {
+        var startInfo = new ProcessStartInfo(executable)
+        {
+            UseShellExecute = false,
+            CreateNoWindow = false,
+        };
+        foreach (var argument in arguments)
+        {
+            startInfo.ArgumentList.Add(argument);
+        }
+
+        try
+        {
+            using var process = Process.Start(startInfo);
+        }
+        catch (Win32Exception ex)
+        {
+            throw new EngineException(EngineErrorKind.Unavailable, $"Could not start {executable}: {ex.Message}", ex);
         }
     }
 

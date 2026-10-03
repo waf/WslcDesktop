@@ -29,7 +29,10 @@ Application.DispatcherUnhandledException += e =>
     e.Handled = true;
 };
 
-mainWindow = new MainWindow(engineStatus, containers, images, dialogs);
+ContainerDetailsViewModel CreateContainerDetails(ContainerRow row) =>
+    new(row, containers, engine.Containers, engine.Logs, engine.Exec, engine.ExternalTerminal);
+
+mainWindow = new MainWindow(engineStatus, containers, images, dialogs, CreateContainerDetails);
 Application.Run(mainWindow, () =>
 {
     _ = engineStatus.RefreshAsync();

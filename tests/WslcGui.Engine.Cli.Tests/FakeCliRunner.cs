@@ -27,6 +27,29 @@ internal sealed class FakeCliRunner : ICliRunner
             : throw new InvalidOperationException($"No canned result for 'wslc {key}'.");
     }
 
+    /// <summary>Canned output for <see cref="StreamOutputAsync"/>, keyed by arguments.</summary>
+    public Dictionary<string, CliOutputLine[]> Streams { get; } = [];
+
+    public List<(string Executable, IReadOnlyList<string> Arguments)> Launched { get; } = [];
+
+    public string? ExecutablePath { get; set; } = @"C:\Program Files\WSL\wslc.exe";
+
+    public IReadOnlyList<string> GlobalArguments { get; set; } = [];
+
+    public async IAsyncEnumerable<CliOutputLine> StreamOutputAsync(IReadOnlyList<string> arguments, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        Invocations.Add(arguments);
+        var key = string.Join(' ', arguments);
+        var lines = Streams.TryGetValue(key, out var canned) ? canned : throw new InvalidOperationException($"No canned stream for 'wslc {key}'.");
+        foreach (var line in lines)
+        {
+            await Task.Yield();
+            yield return line;
+        }
+    }
+
+    public void LaunchDetached(string executable, IReadOnlyList<string> arguments) => Launched.Add((executable, arguments));
+
     public async IAsyncEnumerable<string> StreamLinesAsync(IReadOnlyList<string> arguments, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var result = await RunAsync(arguments, cancellationToken);

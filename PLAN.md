@@ -303,7 +303,7 @@ S1 and S2 can run in parallel. S3 starts once S2's skeleton exists.
 | M0 ✅ | Repo setup: `global.json`, solution, Directory.Build.props, AOT publish script, CI build (GitHub Actions on windows-latest with `PublishAot`) | – |
 | M1 ✅ | `WslcGui.Engine.Cli` with fixtures and tests; health check; Containers and Images pages (read-only), then lifecycle actions | S1, S2 |
 | M2 ✅ | Run dialog, Pull dialog with progress, events-driven refresh, toasts and error handling | M1 |
-| M3 | Container detail: Logs, Inspect, Exec one-shot, external terminal (T0). **MVP release.** | M2 |
+| M3 ✅ | Container detail: Logs, Inspect, Exec one-shot, external terminal (T0). **MVP release.** | M2 |
 | M4 | Embedded terminal (T1) | S3, M3 |
 | M5 | Files tab and stats graphs | S4, M3 |
 | M6 | Volumes, Networks, Builds/save/load, registries, tray icon, settings and troubleshoot pages | M3 |

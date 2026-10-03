@@ -13,7 +13,32 @@ internal interface ICliRunner
 
     /// <summary>Streams stdout lines of a long-running command (for example <c>logs -f</c> or <c>events</c>) until it exits or is cancelled.</summary>
     IAsyncEnumerable<string> StreamLinesAsync(IReadOnlyList<string> arguments, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Streams stdout and stderr lines as they arrive (for commands whose stderr is content, such as <c>logs</c>),
+    /// ending with one <see cref="CliOutputKind.Exit"/> item that carries the exit code. Never throws for a non-zero exit.
+    /// </summary>
+    IAsyncEnumerable<CliOutputLine> StreamOutputAsync(IReadOnlyList<string> arguments, CancellationToken cancellationToken);
+
+    /// <summary>Starts a process that the user interacts with directly (a terminal window). It isn't tracked or killed with the app.</summary>
+    void LaunchDetached(string executable, IReadOnlyList<string> arguments);
+
+    /// <summary>The resolved wslc.exe path, or null if wslc isn't installed.</summary>
+    string? ExecutablePath { get; }
+
+    /// <summary>Global wslc arguments every command gets (for example <c>--session name</c>).</summary>
+    IReadOnlyList<string> GlobalArguments { get; }
 }
+
+internal enum CliOutputKind
+{
+    StdOut,
+    StdErr,
+    Exit,
+}
+
+/// <param name="Text">The line (no line terminator); empty for <see cref="CliOutputKind.Exit"/>.</param>
+internal readonly record struct CliOutputLine(CliOutputKind Kind, string Text, int ExitCode = 0);
 
 internal sealed record CliResult(IReadOnlyList<string> Arguments, int ExitCode, string StdOut, string StdErr, TimeSpan Duration);
 

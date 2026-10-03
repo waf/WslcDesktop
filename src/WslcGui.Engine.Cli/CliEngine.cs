@@ -20,6 +20,9 @@ public sealed class CliEngine : IDisposable
         Lifecycle = new CliContainerLifecycle(_cli);
         Images = new CliImageService(_cli);
         Events = new CliEventSource(_cli);
+        Logs = new CliLogSource(_cli);
+        Exec = new CliExecService(_cli);
+        ExternalTerminal = new CliExternalTerminal(_cli);
     }
 
     public IEngineInfo Info { get; }
@@ -27,6 +30,9 @@ public sealed class CliEngine : IDisposable
     public IContainerLifecycle Lifecycle { get; }
     public IImageService Images { get; }
     public IEventSource Events { get; }
+    public ILogSource Logs { get; }
+    public IExecService Exec { get; }
+    public IExternalTerminalLauncher ExternalTerminal { get; }
 
     /// <summary>The wslc command line equivalent to running <paramref name="spec"/>, for display ("show CLI command").</summary>
     public static string DescribeRun(RunSpec spec) =>
