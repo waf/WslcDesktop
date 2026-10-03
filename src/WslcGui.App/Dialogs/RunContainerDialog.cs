@@ -2,6 +2,7 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Input;
 
+using WslcGui.App.Controls;
 using WslcGui.App.Pages;
 using WslcGui.Core;
 
@@ -12,7 +13,9 @@ internal sealed class RunContainerDialog : Window
 {
     private readonly RunContainerViewModel _vm;
 
-    public RunContainerDialog(RunContainerViewModel vm)
+    /// <param name="imageCandidates">Local image names, for suggestions.</param>
+    /// <param name="volumeCandidates">Named volumes, for suggestions (a Windows folder can always be typed instead).</param>
+    public RunContainerDialog(RunContainerViewModel vm, Func<IEnumerable<string>> imageCandidates, Func<IEnumerable<string>> volumeCandidates)
     {
         _vm = vm;
         Title = "Run a new container";
@@ -20,14 +23,14 @@ internal sealed class RunContainerDialog : Window
         WindowSize = WindowSize.Resizable(680, 720);
         PreviewKeyDown += e =>
         {
-            if (e.Key == Key.Escape && !_vm.IsBusy)
+            if (e.Key == Key.Escape && !_vm.IsBusy && !AutoComplete.IsAnyOpen)
             {
                 e.Handled = true;
                 Close();
             }
         };
 
-        var image = FormParts.Input(vm.Image, "Image, for example postgres:16-alpine", text => vm.Image = text);
+        var image = AutoComplete.Attach(FormParts.Input(vm.Image, "Image, for example postgres:16-alpine", text => vm.Image = text), imageCandidates);
         var preview = new MultiLineTextBox().IsReadOnly().Wrap(true).Text(vm.CommandPreview).Height(64);
         vm.PropertyChanged += (_, e) =>
         {
@@ -65,7 +68,9 @@ internal sealed class RunContainerDialog : Window
                     FormParts.Input(variable.Value, "value", text => variable.Value = text).Column(1))),
             FormParts.RowList("Volumes", "Add volume", vm.Mounts, () => new MountEntry(), mount =>
             {
-                var source = FormParts.Input(mount.Source, @"Windows folder (C:\data) or volume name", text => mount.Source = text);
+                var source = AutoComplete.Attach(
+                    FormParts.Input(mount.Source, @"Windows folder (C:\data) or volume name", text => mount.Source = text),
+                    text => Suggestions.LooksLikePath(text) ? [] : Suggestions.Filter(volumeCandidates(), text));
                 var browse = new Button().Content("Browse…").Padding(8, 4).OnClick(() => _ = BrowseAsync(mount, source));
                 return new Grid().Columns("2*, Auto, *, Auto").Children(
                     source.Margin(0, 0, 4, 0),

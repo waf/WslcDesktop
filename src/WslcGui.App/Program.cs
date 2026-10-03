@@ -10,7 +10,8 @@ using WslcGui.Engine.Cli;
 Win32Platform.Register();
 Direct2DBackend.Register();
 
-using var engine = new CliEngine();
+// WSLCGUI_WSLC_PATH points at a different wslc.exe (a dev build, or a missing path to test the not-installed state).
+using var engine = new CliEngine(new WslcCliOptions(ExecutablePath: Environment.GetEnvironmentVariable("WSLCGUI_WSLC_PATH") is { Length: > 0 } path ? path : null));
 var settings = AppSettings.Load();
 
 MainWindow? mainWindow = null;
@@ -46,7 +47,11 @@ engine.CommandCompleted += trace =>
     }
 };
 
-var dialogs = new DialogService(engine.Lifecycle, engine.Images, engine.Registry, CliEngine.DescribeRun, ui, () => mainWindow);
+// Suggestions come from lists the pages have already loaded, so opening a dialog never starts the engine VM.
+IEnumerable<string> ImageCandidates() => images.AllItems.Where(i => i.Repository != "<none>").Select(i => i.Reference);
+IEnumerable<string> VolumeCandidates() => volumes.AllItems.Where(v => !v.IsAnonymous).Select(v => v.Name);
+
+var dialogs = new DialogService(engine.Lifecycle, engine.Images, engine.Registry, ImageCandidates, VolumeCandidates, CliEngine.DescribeRun, ui, () => mainWindow);
 dialogs.ContainerStarted += () => _ = containers.RefreshAsync();
 dialogs.ImagePulled += () => _ = images.RefreshAsync();
 dialogs.ImageBuilt += () => _ = images.RefreshAsync();

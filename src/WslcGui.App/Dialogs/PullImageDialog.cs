@@ -2,6 +2,7 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Input;
 
+using WslcGui.App.Controls;
 using WslcGui.Core;
 
 namespace WslcGui.App.Dialogs;
@@ -10,14 +11,15 @@ internal sealed class PullImageDialog : Window
 {
     private readonly PullImageViewModel _vm;
 
-    public PullImageDialog(PullImageViewModel vm)
+    /// <param name="imageCandidates">Local image names, for suggestions (pulling one again updates it).</param>
+    public PullImageDialog(PullImageViewModel vm, Func<IEnumerable<string>> imageCandidates)
     {
         _vm = vm;
         Title = "Pull an image";
         StartupLocation = WindowStartupLocation.CenterOwner;
         WindowSize = WindowSize.FitContentSize(520, 320);
 
-        var reference = FormParts.Input(vm.Reference, "alpine, redis:7-alpine, ghcr.io/owner/image:tag", text => vm.Reference = text);
+        var reference = AutoComplete.Attach(FormParts.Input(vm.Reference, "alpine, redis:7-alpine, ghcr.io/owner/image:tag", text => vm.Reference = text), imageCandidates);
         var progress = new ProgressBar { IsIndeterminate = true }.IsVisible(false);
         var pullButton = new Button().MinWidth(96).Content("Pull").OnClick(() => _ = PullAsync());
         var closeButton = new Button().MinWidth(96).Content("Close").OnClick(CloseOrCancel);
@@ -35,6 +37,11 @@ internal sealed class PullImageDialog : Window
 
         PreviewKeyDown += e =>
         {
+            if (AutoComplete.IsAnyOpen)
+            {
+                return;
+            }
+
             if (e.Key == Key.Escape)
             {
                 e.Handled = true;

@@ -101,6 +101,9 @@ public abstract class ResourceListViewModel<TRow> : ObservableObject
     /// <summary>All rows before filtering.</summary>
     protected IReadOnlyList<TRow> AllRows => _all;
 
+    /// <summary>All rows as last loaded, including ones the search filter hides (for suggestions and lookups).</summary>
+    public IReadOnlyList<TRow> AllItems => _all;
+
     /// <summary>Finds a row by key among all rows, including ones the search filter hides.</summary>
     public TRow? Find(string key) => _all.FirstOrDefault(row => KeyOf(row) == key);
 

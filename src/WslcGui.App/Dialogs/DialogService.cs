@@ -11,6 +11,8 @@ internal sealed class DialogService(
     IContainerLifecycle lifecycle,
     IImageService images,
     IRegistryService registry,
+    Func<IEnumerable<string>> imageCandidates,
+    Func<IEnumerable<string>> volumeCandidates,
     Func<RunSpec, string>? describeRun,
     IUserInteraction ui,
     Func<Window?> owner)
@@ -73,7 +75,7 @@ internal sealed class DialogService(
     public async Task ShowRunAsync(string image = "")
     {
         var vm = new RunContainerViewModel(lifecycle, image, describeRun);
-        var dialog = new RunContainerDialog(vm);
+        var dialog = new RunContainerDialog(vm, imageCandidates, volumeCandidates);
         await dialog.ShowDialogAsync(owner());
         if (dialog.ContainerId is { } id)
         {
@@ -85,7 +87,7 @@ internal sealed class DialogService(
     public async Task ShowPullAsync()
     {
         using var vm = new PullImageViewModel(images);
-        var dialog = new PullImageDialog(vm);
+        var dialog = new PullImageDialog(vm, imageCandidates);
         await dialog.ShowDialogAsync(owner());
         if (dialog.PulledReference is { } reference)
         {
